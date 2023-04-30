@@ -1,20 +1,33 @@
-import { Task } from './Task.js';
-import { Project, projects } from './Project.js';
-import { Collection } from './Collection.js';
+import { Task } from './Classes/Task.js';
+import { Project } from './Classes/Project.js';
+import { Collection } from './Classes/Collection.js';
 
-const myCollection = new Collection();
-const p1 = new Project('f');
-const p2 = new Project('d');
-const p3 = new Project('y');
-const p4 = new Project('a');
-const p5 = new Project('h');
+const collection = new Collection();
 
-p1.pushProject(myCollection);
-p2.pushProject(myCollection);
-p3.pushProject(myCollection);
-p4.pushProject(myCollection);
-p5.pushProject(myCollection);
+collection.addProject('Project1');
+collection.addProject('Project2');
+collection.addProject('Project3');
 
-myCollection.sortAscending();
-console.log(myCollection.projects);
 
+console.log(collection);
+
+collection.addProject('Project4');
+
+const p5 = new Project('Project5');
+p5.id = collection;
+p5._id = 'testid';
+p5.pushProject(collection);
+
+console.log(collection);
+
+for(const project of collection.projects){
+    if(project._id === 'testid'){
+        project.addTask('task1');
+        for(const task of project.tasks){
+            task.setTitle('task1 bro');
+            task.setPriority('very high');
+        }
+    }
+}
+
+console.log(collection);

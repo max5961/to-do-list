@@ -1,0 +1,90 @@
+import { Project } from './Project.js';
+
+export class Collection {
+    constructor(){
+        this.projects = [];
+    }
+
+    addProject(title){
+        this.projects.push(new Project(title))
+        this.createIDs();
+    }
+
+    createIDs(){
+        //project.id = this refers to the Project set id method that uses a Collection object as a parameter
+        this.projects.map(Project => Project.id = this);
+    }
+
+    getScheduledTasks(){
+
+        let allTasks = [];
+
+        for(let i = 0; i < this.projects.length; i++){
+            allTasks.push(this.projects[i].tasks);
+        }
+        
+        return allTasks.filter(task => task.scheduled != undefined);
+    }
+
+
+
+    getScheduledTodayTasks(){
+        const allTasks = this.getScheduledTasks();
+
+        const currDate = new Date();
+        
+        return allTasks.filter(task => task.scheduled === currDate);
+    }
+
+    sortScheduledTasks(tasks, typeOfSort = undefined){
+        if(typeOfSort === undefined){
+            return tasks.scheduled.sort();
+        }
+        else if(typeOfSort === 'priority'){
+            return this.sortByPriority(tasks);
+        }
+        else if(typeOfSort === 'dateAsc'){
+            return this.sortByDateAsc(tasks);
+        }
+    }
+
+    // sort projects by name in ascending order
+    sortAscending(){
+        this.projects.sort((a,b) => {
+            const A = a.title.toUpperCase();
+            const B = b.title.toUpperCase();
+
+            if(A < B){
+                return -1;
+            }
+
+            if(A > B){
+                return 1;
+            }
+
+            return 0;
+        })
+    }
+
+    // sort projects by name in descending order
+    sortDescending(){
+        this.projects.sort((a,b) => {
+            const A = a.title.toUpperCase();
+            const B = b.title.toUpperCase();
+
+            if(B < A){
+                return -1;
+            }
+
+            if(B > A){
+                return 1;
+            }
+
+            return 0;
+        })
+    }
+
+
+
+
+}

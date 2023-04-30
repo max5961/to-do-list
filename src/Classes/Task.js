@@ -1,8 +1,8 @@
 export class Task {
-    constructor(title, desc, dueDate, priority){
+    constructor(title, desc, scheduled, priority){
         this.title = title;
         this.desc = desc;
-        this.dueDate = dueDate;
+        this.scheduled = scheduled;
         this.priority = priority;
         this.completed = false;
     }
@@ -15,8 +15,8 @@ export class Task {
         this.desc = value;
     }
 
-    setDueDate(value){
-        this.dueDate = value;
+    setScheduled(value){
+        this.scheduled = value;
     }
 
     setPriority(value){
