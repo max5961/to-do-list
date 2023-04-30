@@ -7,12 +7,20 @@ export class Collection {
 
     addProject(title){
         this.projects.push(new Project(title))
-        this.createIDs();
+        this.setProjectIDs();
     }
 
-    createIDs(){
+    setProjectIDs(){
         //project.id = this refers to the Project set id method that uses a Collection object as a parameter
         this.projects.map(Project => Project.id = this);
+    }
+
+    getAllTasks(){
+        return this.projects.forEach(Project => Project.tasks).flat();
+    }
+    
+    getAllProjects(){
+        return this.projects;
     }
 
     getScheduledTasks(){
@@ -83,8 +91,4 @@ export class Collection {
             return 0;
         })
     }
-
-
-
-
 }

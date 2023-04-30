@@ -21,7 +21,7 @@ export class Project{
 
             let id = getRandomID()
 
-            const takenIds = collection.projects.map(project => project.id);
+            const takenIds = collection.projects.map(Project => Project._id);
 
             while(takenIds.includes(id)){
                 id = getRandomID();
@@ -50,6 +50,11 @@ export class Project{
         this.tasks.splice(index, 1);
     }
 
+    setTaskIDs(){
+        this.tasks.forEach(task => task.id = this);
+    }
+
+    // should only be needed for testing
     pushProject(collection){
         collection.projects.push(this);
     }
