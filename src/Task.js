@@ -4,6 +4,7 @@ export class Task {
         this.desc = desc;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.completed = false;
     }
 
     setTitle(value){
@@ -20,5 +21,9 @@ export class Task {
 
     setPriority(value){
         this.priority = value;
+    }
+
+    setCompleted(){
+        this.completed = !this.completed
     }
 }

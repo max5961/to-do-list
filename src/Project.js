@@ -18,4 +18,8 @@ export class Project{
     ){
         this.tasks.push(new Task(title, desc, dueDate, priority));
     }
+
+    deleteTask(index){
+        this.tasks.splice(index, 1);
+    }
 }
