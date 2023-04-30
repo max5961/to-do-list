@@ -12,11 +12,11 @@ export class Collection {
 
     setProjectIDs(){
         //project.id = this refers to the Project set id method that uses a Collection object as a parameter
-        this.projects.map(Project => Project.id = this);
+        this.projects.forEach(Project => Project.id = this);
     }
 
     getAllTasks(){
-        return this.projects.forEach(Project => Project.tasks).flat();
+        return this.projects.map(Project => Project.tasks).flat();
     }
     
     getAllProjects(){
