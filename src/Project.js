@@ -22,4 +22,9 @@ export class Project{
     deleteTask(index){
         this.tasks.splice(index, 1);
     }
+
+    pushProject(collection){
+        collection.projects.push(this);
+    }
 }
+

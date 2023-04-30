@@ -24,6 +24,6 @@ export class Task {
     }
 
     setCompleted(){
-        this.completed = !this.completed
+        this.completed = !this.completed;
     }
 }
