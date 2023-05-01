@@ -10,7 +10,7 @@ export class Project{
     set id(collection){
 
         function getRandomID(){
-            return `project${Math.floor(Math.random() * 9999 + 1000)}`;
+            return `p${Math.floor(Math.random() * 9999 + 1000)}`;
         }
 
         if(this._id !== null) {
@@ -44,14 +44,26 @@ export class Project{
         priority = undefined,
     ){
         this.tasks.push(new Task(title, desc, scheduled, priority));
-    }
-
-    deleteTask(index){
-        this.tasks.splice(index, 1);
+        this.setTaskIDs();
     }
 
     setTaskIDs(){
         this.tasks.forEach(task => task.id = this);
+    }
+
+    findTask(id){
+        for(let index = 0; index < this.tasks.length; index++){
+            if(this.tasks[index]._id === id){
+                return index;
+            }
+        }
+    }
+
+    removeTask(id){
+
+        const index = this.findTask(id);
+
+        this.tasks.splice(index, 1);
     }
 
     // should only be needed for testing

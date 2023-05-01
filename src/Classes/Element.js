@@ -1,71 +1,39 @@
-class Element {
-    constructor (
+export class Element {
+    constructor(
         type = 'div',
-        cls = '',
+        _class = undefined,
+        textContent = undefined,
         children = [],
-        textContent = '',
-        attributes = {},
-        eventListeners = {},
     ) {
         this.type = type;
-        this.cls = cls;
-        this.children = children;
+        this._class = _class;
         this.textContent = textContent;
-        this.attributes = attributes;
-        this.eventListeners = eventListeners;
-    }
-
-    addClass(value){
-        if(this.cls === ''){
-            this.cls = value;
-        }
-
-        //prevent multiple classes from not being separated by a space
-        else{
-            this.class += ` ${value}`
-        }
-    }
-
-    addChild(value){
-        this.children.push(value);
-        
-    }
-
-    //Erases the current value of this.text and updates it to a new value.  Does not append new value to the current value
-    setText(value){
-        this.textContent = value;
-    }
-
-    addAttribute(object){
-        for(const key of object){
-            this.attributes[key] = key;
-        }
+        this.children = children;
     }
 
     build(){
-
+        
         const element = document.createElement(this.type);
+        
+        if(this._class !== undefined){
 
-        if(cls !== ''){
-            element.classList.add(cls);
-        }
+            const classes = this._class.split(' ');
 
-        if(attributes !== {}){
-            for(key of this.attributes){
-                element.setAttribute(key, value);
+            if(this._class != undefined){
+            
+                for(const _class of classes){
+                    element.classList.add(_class);
+                }
             }
         }
+        
+        if(this.textContent != undefined){
+            element.textContent = this.textContent;
+        }
 
-        if(children !== []){
-            for(child of this.children){
-                child = child.build();
+        if(this.children != []){
+            for(const child of this.children){
                 element.appendChild(child);
-            }
-        }
-
-        if(eventListeners !== {}){
-            for(const key of this.eventListeners){
-                element.addEventListener(key, value);
             }
         }
 

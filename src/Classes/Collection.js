@@ -15,6 +15,25 @@ export class Collection {
         this.projects.forEach(Project => Project.id = this);
     }
 
+    findProject(id){
+        for(let index = 0; index < this.projects.length; index++){
+            if(this.projects[index]._id === id){
+                return index
+            }
+        }
+    }
+
+    removeProject(id){
+        let index = this.findProject(id);
+        this.projects.splice(index, 1);
+    }
+
+    addTaskToProject(id){
+        const index = this.findProject(id);
+
+        this.projects[index].addTask();
+    }
+
     getAllTasks(){
         return this.projects.map(Project => Project.tasks).flat();
     }
@@ -34,8 +53,7 @@ export class Collection {
         return allTasks.filter(task => task.scheduled != undefined);
     }
 
-
-
+    //below are rough drafts
     getScheduledTodayTasks(){
         const allTasks = this.getScheduledTasks();
 
