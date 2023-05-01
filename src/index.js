@@ -8,11 +8,6 @@ import { createMenu } from './build/menu.js';
 import { newProjectForm } from './build/forms.js';
 
 createHeader();
-createMenu();
-
-const newProject = document.querySelector('.new-project');
-newProject.addEventListener('click', newProjectForm)
-
 
 
 

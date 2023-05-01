@@ -1,46 +1,46 @@
 export class Element {
     constructor(
-        type = 'div',
-        _class = undefined,
-        textContent = undefined,
-        children = [],
+        config = {
+            'type':'div',
+        }
     ) {
-        this.type = type;
-        this._class = _class;
-        this.textContent = textContent;
-        this.children = children;
+        this.config = config;
     }
 
     build(){
+        //new Element().build() will default to a created div element
+        //if a config object is passed in as a parameter, then a type property always needs to be added
+        const element = document.createElement(this.config['type']);
         
-        const element = document.createElement(this.type);
-        
-        if(this._class !== undefined){
-
-            const classes = this._class.split(' ');
-
-            if(this._class != undefined){
-            
-                for(const _class of classes){
-                    element.classList.add(_class);
+        for(const property in this.config){
+            if(property === 'class'){
+                element.classList.add(this.config['class']);
+            }
+            else if(property === 'id'){
+                element.setAttribute('id', this.config['id']);
+            }
+            else if(property === 'text-content'){
+                element.textContent = this.config['text-content'];
+            }
+            else if(property === 'eventListeners'){
+                for(const property in this.config['eventListeners']){
+                    element.addEventListener(property, this.config['eventListeners'][property]);
                 }
             }
-        }
-        
-        if(this.textContent != undefined){
-            element.textContent = this.textContent;
-        }
-
-        if(this.children != []){
-            for(const child of this.children){
-                element.appendChild(child);
+            //child must be built using this.build()
+            else if(property === 'children'){
+                for(const child of this.config['children']){
+                    element.appendChild(child);
+                }
+            }
+            else {
+                element.setAttribute(property, this.config[property]);
             }
         }
 
         return element;
     }
 }
-
 
 
 
