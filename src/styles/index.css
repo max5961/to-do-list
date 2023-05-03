@@ -3,7 +3,7 @@
 
 :root {
     --dark-red: #d90429;
-    --red: #da6c78;
+    --red: #c04e5b;
     --green: #8effa0;
     --light-gray1: #edf2f4;
     --light-gray2: #becedd;
@@ -14,6 +14,11 @@
     --darkest-gray: #1f202e;
     --footer: #8dacb9;
     --footer-border:#424b4e;
+
+    --priority-red: #ff8e8e;
+    --priority-yellow: #eaff8e;
+    --priority-green: #8effa0;
+    --priority-unset: #72a4af;
 
     --font-lato: 'Lato', sans-serif;
     --font-source-sans: 'Source Sans Pro', sans-serif;
@@ -131,6 +136,18 @@ body > * {
         height: auto;
         width: 400px;
         background-color: var(--gray2);
+    }
+    .to-do-content :nth-child(1) {
+        background-color: var(--priority-green);
+    }
+    .to-do-content :nth-child(2) {
+        background-color: var(--priority-yellow);
+    }
+    .to-do-content :nth-child(3){
+        background-color: var(--priority-red);
+    }
+    .to-do-content :nth-child(4){
+        background-color: var(--priority-unset);
     }
 
 .mobile-menu {
