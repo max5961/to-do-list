@@ -1,8 +1,9 @@
 import { Task } from './Task.js';
 
 export class Project{
-    constructor(title){
+    constructor(title, desc = undefined){
         this.title = title;
+        this.desc = desc;
         this.tasks = [];
         this._id = null;
     }
