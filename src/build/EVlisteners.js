@@ -234,7 +234,8 @@ function createProjectsDropDown(){
                         new Element({
                             'tagname':'button',
                             'text-content':`${project.title}`,
-                            'class':`${project._id}`,
+                            'projectID':`${project._id}`,
+                            'event-listeners':{'click':buildProjectDisplay}
                         }).build(),
                     ]
                 }).build()
@@ -250,4 +251,28 @@ function removeProjectsDropDown(){
     if(projectsDropDown){
         projectsDropDown.remove();
     }
+}
+
+// Menu --> 'Click on individual project'
+function buildProjectDisplay(e){
+
+    const projectID = e.target.getAttribute('projectID');
+
+    const project = collection.findProject(projectID);
+
+    const toDoContent = document.querySelector('.to-do-content');
+
+    toDoContent.appendChild(
+        new Element({
+            'tagname':'div',
+            'class':'project-display',
+            'projectID':`${projectID}`,
+            'children':[
+                new Element({
+                    'tagname':'div',
+                    'text-content':`${project.title}`,
+                }).build(),
+            ]
+        }).build()
+    );
 }

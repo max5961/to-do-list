@@ -3,7 +3,8 @@ import hamburger from '../images/hamburger.png';
 import { 
     handleAllProjectsClick,
     handleMobileDropDown,
-    newProject } from './EVlisteners.js';
+    newProject,
+        } from './EVlisteners.js';
 
 
 
