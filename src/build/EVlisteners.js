@@ -63,9 +63,8 @@ function createMobileDropDown(){
 export function newProject(){
 
     if (UserSettings.newProject === true){
-        removeToDoContent();
         buildNewProjectForm();
-    }
+    } //testhhh
 
     // Set to false so that a new project form will not be generated until the current is submitted or canceled
     UserSettings.newProject = false;
@@ -164,7 +163,7 @@ function preventDefault(e){
 }
 
 function cancelNewProject(){
-    removeToDoContent();
+    removeModal();
     UserSettings.newProject = true;
 }
 
@@ -177,7 +176,7 @@ function submitProject(){
         collection.addProject(projectName, projectDesc);
 
         // removes the form from the to-do-content div
-        removeToDoContent();
+        removeModal(); //test
 
         // allow the New Project button to generate a new form
         UserSettings.newProject = true;
@@ -188,6 +187,11 @@ function submitProject(){
             createProjectsDropDown();
         }
     }
+}
+
+function removeModal(){
+    const modal = document.querySelector('.new-project-form');
+    modal.remove();
 }
 
 // Menu --> 'All Projects' button
@@ -235,7 +239,7 @@ function createProjectsDropDown(){
                             'tagname':'button',
                             'text-content':`${project.title}`,
                             'projectID':`${project._id}`,
-                            'event-listeners':{'click':buildProjectDisplay}
+                            'event-listeners':{'click':handleProjectClick}
                         }).build(),
                     ]
                 }).build()
@@ -254,12 +258,14 @@ function removeProjectsDropDown(){
 }
 
 // Menu --> 'Click on individual project'
+function handleProjectClick(e){
+    buildProjectDisplay(e);
+}
+
 function buildProjectDisplay(e){
 
     const projectID = e.target.getAttribute('projectID');
-
     const project = collection.findProject(projectID);
-
     const toDoContent = document.querySelector('.to-do-content');
 
     toDoContent.appendChild(
@@ -272,7 +278,16 @@ function buildProjectDisplay(e){
                     'tagname':'div',
                     'text-content':`${project.title}`,
                 }).build(),
+                new Element({
+                    'tagname':'div',
+                    'text-content':'Description',
+                }).build(),
+                new Element({
+                    'tagname':'div',
+                    'text-content':`${project.desc}`
+                }).build()
             ]
         }).build()
     );
 }
+

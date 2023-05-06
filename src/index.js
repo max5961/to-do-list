@@ -9,13 +9,6 @@ export const collection = new Collection();
 
 buildUI();
 
-const test = document.querySelector('.header-delete');
-test.addEventListener('click', () => {
-    console.log(collection);
-    console.log(UserSettings.newProject)
-});
-
-
 
 
 
