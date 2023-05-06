@@ -5,8 +5,8 @@ export class Collection {
         this.projects = [];
     }
 
-    addProject(title){
-        this.projects.push(new Project(title))
+    addProject(title,desc){
+        this.projects.push(new Project(title,desc))
         this.setProjectIDs();
     }
 

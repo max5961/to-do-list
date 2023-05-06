@@ -1,7 +1,7 @@
 import { Task } from './Task.js';
 
 export class Project{
-    constructor(title, desc = undefined){
+    constructor(title, desc){
         this.title = title;
         this.desc = desc;
         this.tasks = [];
@@ -49,6 +49,7 @@ export class Project{
     }
 
     setTaskIDs(){
+        // the set id method in the task class uses the parent project class as a parameter.  This is the reasoning for 'task.id = this'.  May want to reconsider using a setter and use a method setTaskId() for the Task class which might be less confusing.
         this.tasks.forEach(task => task.id = this);
     }
 
@@ -67,7 +68,7 @@ export class Project{
         this.tasks.splice(index, 1);
     }
 
-    // should only be needed for testing
+    // should only be needed for testing because the Project and Collection classes both have methods to add and subsequently push children to their storage
     pushProject(collection){
         collection.projects.push(this);
     }

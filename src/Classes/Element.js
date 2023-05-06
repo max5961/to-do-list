@@ -9,8 +9,8 @@ export class Element {
 
     build(){
         //new Element().build() will default to a created div element
-        //if a config object is passed in as a parameter, then a type property always needs to be added
-        const element = document.createElement(this.config['type']);
+        //if a config object is passed in as a parameter, then a tagname property always needs to be added
+        const element = document.createElement(this.config['tagname']);
         
         for(const property in this.config){
             if(property === 'class'){
@@ -22,10 +22,13 @@ export class Element {
             else if(property === 'text-content'){
                 element.textContent = this.config['text-content'];
             }
-            else if(property === 'eventListeners'){
-                for(const property in this.config['eventListeners']){
-                    element.addEventListener(property, this.config['eventListeners'][property]);
+            else if(property === 'event-listeners'){
+                for(const property in this.config['event-listeners']){
+                    element.addEventListener(property, this.config['event-listeners'][property]);
                 }
+            }
+            else if(property === 'src'){
+                element.src = this.config['src'];
             }
             //child must be built using this.build()
             else if(property === 'children'){
@@ -33,7 +36,7 @@ export class Element {
                     element.appendChild(child);
                 }
             }
-            else {
+            else if(property !== 'tagname'){
                 element.setAttribute(property, this.config[property]);
             }
         }
