@@ -7,7 +7,6 @@ import {
         } from './EVlisteners.js';
 
 
-
 const content = document.getElementById('content');
 
 function buildHeader(){

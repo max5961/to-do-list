@@ -64,7 +64,7 @@ export function newProject(){
 
     if (UserSettings.newProject === true){
         buildNewProjectForm();
-    } //testhhh
+    }
 
     // Set to false so that a new project form will not be generated until the current is submitted or canceled
     UserSettings.newProject = false;
@@ -162,11 +162,13 @@ function preventDefault(e){
     e.preventDefault();
 }
 
+// on cancel button click
 function cancelNewProject(){
     removeModal();
     UserSettings.newProject = true;
 }
 
+// on submit button click
 function submitProject(){
     
     const projectName = document.querySelector('input#name').value;
@@ -176,7 +178,7 @@ function submitProject(){
         collection.addProject(projectName, projectDesc);
 
         // removes the form from the to-do-content div
-        removeModal(); //test
+        removeModal();
 
         // allow the New Project button to generate a new form
         UserSettings.newProject = true;
@@ -188,6 +190,7 @@ function submitProject(){
         }
     }
 }
+
 
 function removeModal(){
     const modal = document.querySelector('.new-project-form');
@@ -259,6 +262,7 @@ function removeProjectsDropDown(){
 
 // Menu --> 'Click on individual project'
 function handleProjectClick(e){
+    removeToDoContent();
     buildProjectDisplay(e);
 }
 
@@ -275,17 +279,108 @@ function buildProjectDisplay(e){
             'projectID':`${projectID}`,
             'children':[
                 new Element({
-                    'tagname':'div',
+                    'tagname':'h1',
+                    'class':'display-project-title',
                     'text-content':`${project.title}`,
                 }).build(),
                 new Element({
                     'tagname':'div',
-                    'text-content':'Description',
+                    'class':'description-container',
+                    'children':[
+                        new Element({
+                            'tagname':'div',
+                            'class':'display-description-title',
+                            'text-content':'Description',
+                        }).build(),
+                        new Element({
+                            'tagname':'div',
+                            'class':'display-description-content',
+                            'text-content':`${project.desc}`
+                        }).build()
+                    ]
                 }).build(),
                 new Element({
                     'tagname':'div',
-                    'text-content':`${project.desc}`
-                }).build()
+                    'class':'display-project-tasks-content',
+                    'children':[
+                        new Element({
+                            'tagname':'h1',
+                            'text-content':'Tasks',
+                        }).build(),
+                        new Element({
+                            'tagname':'button',
+                            'class':'add-task',
+                            'text-content':'+',
+                            'event-listeners':{'click':buildNewTaskForm},
+                        }).build(),
+                    ]
+                }).build(),
+            ]
+        }).build()
+    );
+}
+
+// Project display --> add task button, create form
+function buildNewTaskForm(){
+
+    const taskContent = document.querySelector('.display-project-tasks-content');
+
+    taskContent.appendChild(
+        new Element({
+            'tagname':'form',
+            'class':'new-task-form',
+            'children':[
+                new Element({
+                    'tagname':'input',
+                    'placeholder':'Task name',
+                    'class':'task-name-input',
+                }).build(),
+                new Element({
+                    'tagname':'input',
+                    'placeholder':'Description',
+                    'class':'task-desc-input',
+                }).build(),
+                new Element({
+                    'tagname':'div',
+                    'class':'priority-container',
+                    'children':[
+                        new Element({
+                            'tagname':'label',
+                            'text-content':'Priority',
+                        }).build(),
+                        new Element({
+                            'tagname':'select',
+                            'children':[
+                                new Element({
+                                    'tagname':'option',
+                                    'text-content':'Low',
+                                }).build(),
+                                new Element({
+                                    'tagname':'option',
+                                    'text-content':'Medium',
+                                }).build(),
+                                new Element({
+                                    'tagname':'option',
+                                    'text-content':'High',
+                                }).build(),
+                            ]
+                        }).build(),
+                    ]
+                }).build(),
+                new Element({
+                    'tagname':'div',
+                    'class':'date-container',
+                    'children':[
+                        new Element({
+                            'tagname':'label',
+                            'text-content':'Due date',
+                        }).build(),
+                        new Element({
+                            'tagname':'input',
+                            'type':'date',
+                        }).build(),
+                    ]
+                }).build(),
             ]
         }).build()
     );
