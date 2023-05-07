@@ -177,7 +177,6 @@ function submitProject(){
     if (projectName != '') {
         collection.addProject(projectName, projectDesc);
 
-        // removes the form from the main-content div
         removeModal();
 
         // allow the New Project button to generate a new form
@@ -191,7 +190,6 @@ function submitProject(){
     }
 }
 
-
 function removeModal(){
     const modal = document.querySelector('.new-project-modal');
     modal.remove();
@@ -204,10 +202,12 @@ export function handleAllProjectsClick(){
 
     // reverse UserSettings.allProjects value
     if(projects.length > 0){
-        UserSettings.allProjects = !UserSettings.allProjects;
-    }
 
-    UserSettings.allProjects ? buildProjectsDropDown() : removeProjectsDropDown();
+        UserSettings.allProjects = !UserSettings.allProjects;
+
+        UserSettings.allProjects ? buildProjectsDropDown() : removeProjectsDropDown();
+
+    }   
     
 }
 
