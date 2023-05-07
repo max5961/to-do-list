@@ -1,0 +1,103 @@
+/* #content ------------------------------------------------------ #content */
+#content {
+    width: 100%;
+    min-height: 100%;
+    height: auto;
+    box-sizing: border-box;
+    
+    display: grid;
+    grid-template-columns: 225px 1fr;
+    grid-template-rows: 70px 1fr 70px;
+    grid-template-areas:
+        "header header"
+        "menu content"
+        "footer footer";
+}
+
+/* .header ------------------------------------------------------ .header */
+.header {
+    grid-area: header;
+    background-color: var(--dark1);
+    color: var(--light1);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+    .header .header-button-container {
+        width: 50%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .header .header-title {
+        font-size: 2rem;
+    }
+    .header button {
+        width: 100px;
+    }
+    .header button.header-delete {
+        background-color: var(--red);
+    }
+    .header button.new-project {
+        background-color: var(--light2);
+    }
+
+/* .menu ------------------------------------------------------ .menu */
+.menu {
+    grid-area: menu;
+    background-color: var(--dark2);
+    border-right: 2px solid var(--dark2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: auto;
+    gap: 2px;
+}
+    .menu button {
+        width: 100%;
+        height: 50px;
+        background-color: var(--light3);
+    }
+    .menu ul {
+        width: 100%;
+        height: auto;
+        display: flex;
+        gap: 2px;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+        .menu ul li {
+            width: 85%;
+            height: 25px;
+            padding-left: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .menu ul li button {
+            height: 100%;
+            width: 100%;
+            background-color: var(--medium1);
+        }
+
+/* .main-content ------------------------------------------------------ .main-content */
+.main-content {
+    background-color: var(--light1);
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    position: relative;
+}
+
+/* .footer ------------------------------------------------------ .footer */
+.footer {
+    grid-area: footer;
+    background-color: var(--footer);
+    border-top: 2px solid var(--footer-border);
+}

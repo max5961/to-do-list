@@ -87,7 +87,7 @@ function buildNewProjectModal(){
     toDoContent.appendChild(
         new Element({
             'tagname':'form',
-            'class':'new-project-form',
+            'class':'new-project-modal',
             'event-listeners':{'submit':preventDefault},
             'children':[
 
@@ -193,7 +193,7 @@ function submitProject(){
 
 
 function removeModal(){
-    const modal = document.querySelector('.new-project-form');
+    const modal = document.querySelector('.new-project-modal');
     modal.remove();
 }
 
