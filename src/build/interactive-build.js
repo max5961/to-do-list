@@ -86,73 +86,80 @@ function buildNewProjectModal(){
 
     toDoContent.appendChild(
         new Element({
-            'tagname':'form',
-            'class':'new-project-modal',
-            'event-listeners':{'submit':preventDefault},
+            'tagname':'div',
+            'class':'new-project-modal-container',
             'children':[
+                new Element({
+                    'tagname':'form',
+                    'class':'new-project-modal',
+                    'event-listeners':{'submit':preventDefault},
+                    'children':[
+        
+                        // container for Project name input/label
+                        new Element({
+                            'tagname':'div',
+                            'class':'input-container',
+                            'children':[
+                                new Element({
+                                    'tagname':'label',
+                                    'class':'project-title',
+                                    'for':'name',
+                                    'text-content':'Project Name',
+                                }).build(),
+                                new Element({
+                                    'tagname':'input',
+                                    'type':'text',
+                                    'id':'name',
+                                    'name':'name',
+                                    'required':'true',
+                                }).build(),
+                            ]
+                        }).build(),
+        
+                        // container for Project desc input/label
+                        new Element({
+                            'tagname':'div',
+                            'class':'input-container',
+                            'children':[
+                                new Element({
+                                    'tagname':'label',
+                                    'class':'project-desc',
+                                    'for':'desc',
+                                    'text-content':'Description',
+                                }).build(),
+                                new Element({
+                                    'tagname':'textarea',
+                                    'id':'desc',
+                                    'name':'desc',
+                                }).build(),
+                            ]
+                        }).build(),
+                        new Element({
+                            'tagname':'div',
+                            'class':'form-buttons-container',
+                            'children':[
 
-                // container for Project name input/label
-                new Element({
-                    'tagname':'div',
-                    'class':'input-container',
-                    'children':[
-                        new Element({
-                            'tagname':'label',
-                            'class':'project-title',
-                            'for':'name',
-                            'text-content':'Project Name',
-                        }).build(),
-                        new Element({
-                            'tagname':'input',
-                            'type':'text',
-                            'id':'name',
-                            'name':'name',
-                            'required':'true',
-                        }).build(),
-                    ]
-                }).build(),
+                                // cancel button
+                                new Element({
+                                    'tagname':'button',
+                                    'type':'button',
+                                    'class':'cancel-new-project',
+                                    'text-content':'cancel',
+                                    'event-listeners':{'click':cancelNewProject}
+                                }).build(),
 
-                // container for Project desc input/label
-                new Element({
-                    'tagname':'div',
-                    'class':'input-container',
-                    'children':[
-                        new Element({
-                            'tagname':'label',
-                            'class':'project-desc',
-                            'for':'desc',
-                            'text-content':'Description',
-                        }).build(),
-                        new Element({
-                            'tagname':'textarea',
-                            'id':'desc',
-                            'name':'desc',
+                                // submit button
+                                new Element({
+                                    'tagname':'button',
+                                    'type':'submit',
+                                    'class':'submit-new-project',
+                                    'text-content':'Add',
+                                    'event-listeners':{'click':submitProject}
+                                }).build(),
+                            ]
                         }).build(),
                     ]
-                }).build(),
-                
-                new Element({
-                    'tagname':'div',
-                    'class':'form-buttons-container',
-                    'children':[
-                        // cancel button
-                        new Element({
-                            'tagname':'button',
-                            'type':'button',
-                            'class':'cancel-new-project',
-                            'text-content':'cancel',
-                            'event-listeners':{'click':cancelNewProject}
-                        }).build(),
-                        // submit button
-                        new Element({
-                            'tagname':'button',
-                            'type':'submit',
-                            'class':'submit-new-project',
-                            'text-content':'Add',
-                            'event-listeners':{'click':submitProject}
-                        }).build(),
-                    ]
-                }).build(),
+                }).build()
             ]
         }).build()
     )
@@ -191,7 +198,7 @@ function submitProject(){
 }
 
 function removeModal(){
-    const modal = document.querySelector('.new-project-modal');
+    const modal = document.querySelector('.new-project-modal-container');
     modal.remove();
 }
 
