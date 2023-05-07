@@ -63,7 +63,7 @@ function createMobileDropDown(){
 export function newProject(){
 
     if (UserSettings.newProject === true){
-        buildNewProjectForm();
+        buildNewProjectModal();
     }
 
     // Set to false so that a new project form will not be generated until the current is submitted or canceled
@@ -72,7 +72,7 @@ export function newProject(){
 
 function removeToDoContent(){
     
-    const toDoContent = document.querySelector('.to-do-content');
+    const toDoContent = document.querySelector('.main-content');
 
     while (toDoContent.firstChild) {
         toDoContent.removeChild(toDoContent.firstChild);
@@ -80,9 +80,9 @@ function removeToDoContent(){
     
 }
 
-function buildNewProjectForm(){
+function buildNewProjectModal(){
 
-    const toDoContent = document.querySelector('.to-do-content');
+    const toDoContent = document.querySelector('.main-content');
 
     toDoContent.appendChild(
         new Element({
@@ -177,7 +177,7 @@ function submitProject(){
     if (projectName != '') {
         collection.addProject(projectName, projectDesc);
 
-        // removes the form from the to-do-content div
+        // removes the form from the main-content div
         removeModal();
 
         // allow the New Project button to generate a new form
@@ -186,7 +186,7 @@ function submitProject(){
         // add the Project to the Menu Projects if drop down true
         if(UserSettings.allProjects){
             removeProjectsDropDown();
-            createProjectsDropDown();
+            buildProjectsDropDown();
         }
     }
 }
@@ -207,11 +207,11 @@ export function handleAllProjectsClick(){
         UserSettings.allProjects = !UserSettings.allProjects;
     }
 
-    UserSettings.allProjects ? createProjectsDropDown() : removeProjectsDropDown();
+    UserSettings.allProjects ? buildProjectsDropDown() : removeProjectsDropDown();
     
 }
 
-function createProjectsDropDown(){
+function buildProjectsDropDown(){
     // find projects button and append a new ul element
     const projectsButton = document.querySelector('.projects');
     projectsButton.insertAdjacentElement('afterend',
@@ -270,7 +270,7 @@ function buildProjectDisplay(e){
 
     const projectID = e.target.getAttribute('projectID');
     const project = collection.findProject(projectID);
-    const toDoContent = document.querySelector('.to-do-content');
+    const toDoContent = document.querySelector('.main-content');
 
     toDoContent.appendChild(
         new Element({
@@ -280,28 +280,28 @@ function buildProjectDisplay(e){
             'children':[
                 new Element({
                     'tagname':'h1',
-                    'class':'display-project-title',
+                    'class':'project-display-title',
                     'text-content':`${project.title}`,
                 }).build(),
                 new Element({
                     'tagname':'div',
-                    'class':'description-container',
+                    'class':'project-description-container',
                     'children':[
                         new Element({
                             'tagname':'div',
-                            'class':'display-description-title',
+                            'class':'project-description-title',
                             'text-content':'Description',
                         }).build(),
                         new Element({
                             'tagname':'div',
-                            'class':'display-description-content',
+                            'class':'project-description-content',
                             'text-content':`${project.desc}`
                         }).build()
                     ]
                 }).build(),
                 new Element({
                     'tagname':'div',
-                    'class':'display-project-tasks-content',
+                    'class':'project-tasks-content',
                     'children':[
                         new Element({
                             'tagname':'h1',
@@ -323,7 +323,7 @@ function buildProjectDisplay(e){
 // Project display --> add task button, create form
 function buildNewTaskForm(){
 
-    const taskContent = document.querySelector('.display-project-tasks-content');
+    const taskContent = document.querySelector('.project-tasks-content');
 
     taskContent.appendChild(
         new Element({

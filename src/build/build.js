@@ -112,7 +112,7 @@ function buildToDoContent(){
     content.appendChild(
         new Element({
             'tagname':'div',
-            'class':'to-do-content',
+            'class':'main-content',
         }).build()
     )
 }
