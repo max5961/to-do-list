@@ -36,6 +36,11 @@ export class Element {
                     element.appendChild(child);
                 }
             }
+            else if(property === 'style'){
+                for(const property in this.config['style']){
+                    element.style[property] = this.config['style'][property];
+                }
+            }
             else if(property !== 'tagname'){
                 element.setAttribute(property, this.config[property]);
             }

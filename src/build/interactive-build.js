@@ -66,7 +66,7 @@ export function newProject(){
         buildNewProjectModal();
     }
 
-    // Set to false so that a new project form will not be generated until the current is submitted or canceled
+    // new project form will not be generated until set to true again
     UserSettings.newProject = false;
 }
 
@@ -271,6 +271,7 @@ function removeProjectsDropDown(){
 function handleProjectClick(e){
     removeToDoContent();
     buildProjectDisplay(e);
+    buildProjectTasks();
 }
 
 function buildProjectDisplay(e){
@@ -283,7 +284,7 @@ function buildProjectDisplay(e){
         new Element({
             'tagname':'div',
             'class':'project-display',
-            'projectID':`${projectID}`,
+            'content-projectID':`${projectID}`,
             'children':[
                 new Element({
                     'tagname':'h1',
@@ -292,19 +293,8 @@ function buildProjectDisplay(e){
                 }).build(),
                 new Element({
                     'tagname':'div',
-                    'class':'project-description-container',
-                    'children':[
-                        new Element({
-                            'tagname':'div',
-                            'class':'project-description-title',
-                            'text-content':'Description',
-                        }).build(),
-                        new Element({
-                            'tagname':'div',
-                            'class':'project-description-content',
-                            'text-content':`${project.desc}`
-                        }).build()
-                    ]
+                    'class':'project-description',
+                    'text-content':`${project.desc}`
                 }).build(),
                 new Element({
                     'tagname':'div',
@@ -318,7 +308,11 @@ function buildProjectDisplay(e){
                             'tagname':'button',
                             'class':'add-task',
                             'text-content':'+',
-                            'event-listeners':{'click':buildNewTaskForm},
+                            'event-listeners':{'click':handleNewTaskClick},
+                        }).build(),
+                        new Element({
+                            'tagname':'div',
+                            'class':'all-tasks-container',
                         }).build(),
                     ]
                 }).build(),
@@ -327,25 +321,44 @@ function buildProjectDisplay(e){
     );
 }
 
-// Project display --> add task button, create form
+// Project display --> add task button --> create form
+function handleNewTaskClick(){
+
+    UserSettings.newTask = !UserSettings.newTask;
+    
+    changeNewTaskButton();
+
+    !UserSettings.newTask ? buildNewTaskForm() : removeNewTaskForm();
+}
+
+function changeNewTaskButton(){
+
+    const button = document.querySelector('button.add-task');
+    
+    if (!UserSettings.newTask) {
+        button.style.backgroundColor = 'var(--red)';
+        button.style.color = 'var(--light1)';
+        button.textContent = '-';
+    } else {
+        button.style.backgroundColor = 'var(--green)';
+        button.style.color = 'black';
+        button.textContent = '+';
+    }
+}
+
 function buildNewTaskForm(){
 
-    const taskContent = document.querySelector('.project-tasks-content');
+    const button = document.querySelector('button.add-task');
 
-    taskContent.appendChild(
+    button.insertAdjacentElement('afterend',
         new Element({
             'tagname':'form',
             'class':'new-task-form',
             'children':[
                 new Element({
                     'tagname':'input',
-                    'placeholder':'Task name',
+                    'placeholder':'Task',
                     'class':'task-name-input',
-                }).build(),
-                new Element({
-                    'tagname':'input',
-                    'placeholder':'Description',
-                    'class':'task-desc-input',
                 }).build(),
                 new Element({
                     'tagname':'div',
@@ -353,22 +366,35 @@ function buildNewTaskForm(){
                     'children':[
                         new Element({
                             'tagname':'label',
-                            'text-content':'Priority',
+                            'text-content':'Priority: ',
                         }).build(),
                         new Element({
                             'tagname':'select',
+                            'class':'priority',
                             'children':[
                                 new Element({
                                     'tagname':'option',
-                                    'text-content':'Low',
+                                    'class':'task-none',
+                                    'value':'unset',
+                                    'text-content':'none',
                                 }).build(),
                                 new Element({
                                     'tagname':'option',
-                                    'text-content':'Medium',
+                                    'class':'task-low',
+                                    'value':'low',
+                                    'text-content':'!',
                                 }).build(),
                                 new Element({
                                     'tagname':'option',
-                                    'text-content':'High',
+                                    'class':'task-medium',
+                                    'value':'medium',
+                                    'text-content':'!!',
+                                }).build(),
+                                new Element({
+                                    'tagname':'option',
+                                    'class':'task-high',
+                                    'value':'high',
+                                    'text-content':'!!!',
                                 }).build(),
                             ]
                         }).build(),
@@ -380,7 +406,7 @@ function buildNewTaskForm(){
                     'children':[
                         new Element({
                             'tagname':'label',
-                            'text-content':'Due date',
+                            'text-content':'Due date: ',
                         }).build(),
                         new Element({
                             'tagname':'input',
@@ -388,8 +414,148 @@ function buildNewTaskForm(){
                         }).build(),
                     ]
                 }).build(),
+                new Element({
+                    'tagname':'button',
+                    'type':'submit',
+                    'class':'submit-task',
+                    'text-content':'Submit',
+                    'event-listeners':{'click':submitTask},
+                }).build(),
             ]
         }).build()
     );
+}
+
+function removeNewTaskForm(){
+    const form = document.querySelector('form.new-task-form');
+    form.remove();
+}
+
+// Project display --> submit new task button
+function submitTask(e){
+
+    preventDefault(e);
+
+    UserSettings.newTask = true;
+
+    changeNewTaskButton();
+
+    addProjectToStorage();
+
+    removeNewTaskForm();
+
+    removeProjectTasks();
+
+    buildProjectTasks();
+
+}
+
+function getProject(){
+    const projectDisplay = document.querySelector('.project-display');
+    const projectID = projectDisplay.getAttribute('content-projectid');
+    return collection.findProject(projectID);
+}
+
+function addProjectToStorage(){
+    
+    const project = getProject();
+
+    // (title, desc, scheduled, priority)
+    project.addTask(
+        document.querySelector('.task-name-input').value,
+        undefined,
+        document.querySelector('input[type="date"]').value,
+        document.querySelector('select.priority').value
+    );
+
+    console.log(project);
+}
+
+function buildProjectTasks(){
+    
+    const project = getProject();
+
+    for (const task of project.tasks) {
+        buildTask(task);
+    }
+    
+    function buildTask(task){
+
+        const allTasksContainer = document.querySelector('.all-tasks-container');
+
+        const priorityColor = getPriorityColor(task);
+
+        allTasksContainer.appendChild(
+            new Element({
+                'tagname':'div',
+                'class':'task-container',
+                'content-taskid':`${task._id}`,
+                'event-listeners':{'mouseover':updateCurrentTask},
+                'children':[
+                    new Element({
+                        'tagname':'div',
+                        'class':'task-priority',
+                        'style':{backgroundColor:`${priorityColor}`},
+                    }).build(),
+                    new Element({
+                        'tagname':'div',
+                        'class':'task-name',
+                        'text-content':`${task.title}`,
+                    }).build(),
+                    new Element({
+                        'tagname':'div',
+                        'class':'task-date',
+                        'text-content':`${task.scheduled}`,
+                    }).build(),
+                    new Element({
+                        'tagname':'button',
+                        'class':'edit-task',
+                        'text-content':'Edit',
+                    }).build(),
+                ]
+            }).build()
+        );
+    }
+}
+
+function removeProjectTasks(){
+    
+    const allTasksContainer = document.querySelector('.all-tasks-container');
+
+    while (allTasksContainer.firstChild) {
+        allTasksContainer.removeChild(allTasksContainer.firstChild);
+    }
+
+}
+    
+function getPriorityColor(task){
+    if (task.priority === 'unset') {
+        return 'var(--priority-unset)';
+    } else if (task.priority === 'low') {
+        return 'var(--priority-green)';
+    } else if (task.priority === 'medium') {
+        return 'var(--priority-yellow)';
+    } else if (task.priority === 'high') {
+        return 'var(--priority-red)';
+    }
+}
+
+// Project display --> edit task button
+function updateCurrentTask(e){
+
+    let id = e.target.getAttribute('content-taskid');
+
+    if (id === null){
+        const parent = e.target.parentNode;
+        id = parent.getAttribute('content-taskid');
+    }
+
+    UserSettings.currentTask = id;
+
+    console.log(UserSettings.currentElement);
+}
+
+function getCurrentTask(){
+    return UserSettings.currentTask;
 }
 

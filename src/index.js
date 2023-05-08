@@ -7,6 +7,11 @@ export const collection = new Collection();
 
 buildUI();
 
+const header = document.querySelector('.header');
+const test = document.createElement('div');
+test.style.color = 'red';
+header.appendChild(test);
+
 
 
 
