@@ -1,4 +1,4 @@
-export const UserSettings = {
+export const Settings = {
     // if true -> allow the 'New Project' button to create a form to submit a new project
     newProject : true,
 

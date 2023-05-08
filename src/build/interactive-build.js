@@ -1,7 +1,7 @@
 import { Element } from "../Classes/Element.js";
 import { Collection } from "../Classes/Collection.js";
 import { collection } from '../index.js';
-import { UserSettings } from "../Classes/UserSettings.js";
+import { Settings } from "../Classes/Settings.js";
 
 
 
@@ -62,12 +62,12 @@ function createMobileDropDown(){
 // 'New Project' button
 export function newProject(){
 
-    if (UserSettings.newProject === true){
+    if (Settings.newProject === true){
         buildNewProjectModal();
     }
 
     // new project form will not be generated until set to true again
-    UserSettings.newProject = false;
+    Settings.newProject = false;
 }
 
 function removeToDoContent(){
@@ -172,7 +172,7 @@ function preventDefault(e){
 // on cancel button click
 function cancelNewProject(){
     removeModal();
-    UserSettings.newProject = true;
+    Settings.newProject = true;
 }
 
 // on submit button click
@@ -187,10 +187,10 @@ function submitProject(){
         removeModal();
 
         // allow the New Project button to generate a new form
-        UserSettings.newProject = true;
+        Settings.newProject = true;
 
         // add the Project to the Menu Projects if drop down true
-        if(UserSettings.allProjects){
+        if(Settings.allProjects){
             removeProjectsDropDown();
             buildProjectsDropDown();
         }
@@ -207,12 +207,12 @@ export function handleAllProjectsClick(){
 
     const projects = collection.getAllProjects();
 
-    // reverse UserSettings.allProjects value
+    // reverse Settings.allProjects value
     if(projects.length > 0){
 
-        UserSettings.allProjects = !UserSettings.allProjects;
+        Settings.allProjects = !Settings.allProjects;
 
-        UserSettings.allProjects ? buildProjectsDropDown() : removeProjectsDropDown();
+        Settings.allProjects ? buildProjectsDropDown() : removeProjectsDropDown();
 
     }   
     
@@ -324,18 +324,18 @@ function buildProjectDisplay(e){
 // Project display --> add task button --> create form
 function handleNewTaskClick(){
 
-    UserSettings.newTask = !UserSettings.newTask;
+    Settings.newTask = !Settings.newTask;
     
     changeNewTaskButton();
 
-    !UserSettings.newTask ? buildNewTaskForm() : removeNewTaskForm();
+    !Settings.newTask ? buildNewTaskForm() : removeNewTaskForm();
 }
 
 function changeNewTaskButton(){
 
     const button = document.querySelector('button.add-task');
     
-    if (!UserSettings.newTask) {
+    if (!Settings.newTask) {
         button.style.backgroundColor = 'var(--red)';
         button.style.color = 'var(--light1)';
         button.textContent = '-';
@@ -354,10 +354,12 @@ function buildNewTaskForm(){
         new Element({
             'tagname':'form',
             'class':'new-task-form',
+            'event-listeners':{'submit':preventDefault},
             'children':[
                 new Element({
                     'tagname':'input',
                     'placeholder':'Task',
+                    'required':'true',
                     'class':'task-name-input',
                 }).build(),
                 new Element({
@@ -434,20 +436,20 @@ function removeNewTaskForm(){
 // Project display --> submit new task button
 function submitTask(e){
 
-    preventDefault(e);
+    if (document.querySelector('.task-name-input').value != ''){
+        
+        Settings.newTask = true;
 
-    UserSettings.newTask = true;
-
-    changeNewTaskButton();
-
-    addProjectToStorage();
-
-    removeNewTaskForm();
-
-    removeProjectTasks();
-
-    buildProjectTasks();
-
+        changeNewTaskButton();
+    
+        addTaskToStorage();
+    
+        removeNewTaskForm();
+    
+        removeProjectTasks();
+    
+        buildProjectTasks();
+    }
 }
 
 function getProject(){
@@ -456,7 +458,7 @@ function getProject(){
     return collection.findProject(projectID);
 }
 
-function addProjectToStorage(){
+function addTaskToStorage(){
     
     const project = getProject();
 
@@ -550,12 +552,12 @@ function updateCurrentTask(e){
         id = parent.getAttribute('content-taskid');
     }
 
-    UserSettings.currentTask = id;
+    Settings.currentTask = id;
 
-    console.log(UserSettings.currentElement);
+    console.log(Settings.currentElement);
 }
 
 function getCurrentTask(){
-    return UserSettings.currentTask;
+    return Settings.currentTask;
 }
 
