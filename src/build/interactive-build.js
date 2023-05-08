@@ -1,7 +1,6 @@
-import { Element } from "../Classes/Element.js";
-import { Collection } from "../Classes/Collection.js";
+import { Element } from "./Element.js";
 import { collection } from '../index.js';
-import { Settings } from "../Classes/Settings.js";
+import { Settings } from "../data/Settings.js";
 
 
 
@@ -285,6 +284,7 @@ function buildProjectDisplay(e){
             'tagname':'div',
             'class':'project-display',
             'content-projectID':`${projectID}`,
+            'event-listeners':{'mouseover':Settings.updateCurrentProject},
             'children':[
                 new Element({
                     'tagname':'h1',
@@ -492,7 +492,7 @@ function buildProjectTasks(){
                 'tagname':'div',
                 'class':'task-container',
                 'content-taskid':`${task._id}`,
-                'event-listeners':{'mouseover':updateCurrentTask},
+                'event-listeners':{'mouseover':Settings.updateCurrentTask},
                 'children':[
                     new Element({
                         'tagname':'div',
