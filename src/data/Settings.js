@@ -17,14 +17,11 @@ export const Settings = {
     // callback to be used with the 'mouseover' event
     updateCurrentTask(e){
         this.currentTask = Settings.checkAllNodesForID(e.target,'content-taskid');
-        console.log(this.currentTask);
     },
 
     // callback to be used with the 'mouseover' event
     updateCurrentProject(e){
         this.currentProject = Settings.checkAllNodesForID(e.target, 'content-projectid');
-
-        console.log(this.currentProject);
     },
 
     checkAllNodesForID(element, attribute){
@@ -35,5 +32,5 @@ export const Settings = {
         } else {
             return id;
         }
-    }
+    },
 }

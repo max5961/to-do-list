@@ -301,14 +301,20 @@ function buildProjectDisplay(e){
                     'class':'project-tasks-content',
                     'children':[
                         new Element({
-                            'tagname':'h1',
-                            'text-content':'Tasks',
-                        }).build(),
-                        new Element({
-                            'tagname':'button',
-                            'class':'add-task',
-                            'text-content':'+',
-                            'event-listeners':{'click':handleNewTaskClick},
+                            'tagname':'div',
+                            'class':'display-tasks-header',
+                            'children':[
+                                new Element({
+                                    'tagname':'h1',
+                                    'text-content':'Tasks',
+                                }).build(),
+                                new Element({
+                                    'tagname':'button',
+                                    'class':'add-task',
+                                    'text-content':'+',
+                                    'event-listeners':{'click':handleNewTaskClick},
+                                }).build(),
+                            ]
                         }).build(),
                         new Element({
                             'tagname':'div',
@@ -348,9 +354,9 @@ function changeNewTaskButton(){
 
 function buildNewTaskForm(){
 
-    const button = document.querySelector('button.add-task');
+    const container = document.querySelector('.display-tasks-header');
 
-    button.insertAdjacentElement('afterend',
+    container.insertAdjacentElement('afterend',
         new Element({
             'tagname':'form',
             'class':'new-task-form',
@@ -541,23 +547,3 @@ function getPriorityColor(task){
         return 'var(--priority-red)';
     }
 }
-
-// Project display --> edit task button
-function updateCurrentTask(e){
-
-    let id = e.target.getAttribute('content-taskid');
-
-    if (id === null){
-        const parent = e.target.parentNode;
-        id = parent.getAttribute('content-taskid');
-    }
-
-    Settings.currentTask = id;
-
-    console.log(Settings.currentElement);
-}
-
-function getCurrentTask(){
-    return Settings.currentTask;
-}
-

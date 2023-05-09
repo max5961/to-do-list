@@ -79,17 +79,23 @@
         margin: 0;
         color: var(--light2);
     }
-    .project-display .project-tasks-content {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-    .project-display button.add-task {
-        width: 50px;
-        background-color: var(--green);
-        margin-bottom: 5px;
-    }
+        .project-display .display-tasks-header {
+            width: 140px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .project-display .project-tasks-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+        }
+        .project-display button.add-task {
+            width: 50px;
+            background-color: var(--green);
+        }
 
 .project-display form.new-task-form {
     width: 300px;

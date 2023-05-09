@@ -1,4 +1,4 @@
-import { Element } from '../Classes/Element.js';
+import { Element } from './Element.js';
 import hamburger from '../images/hamburger.png';
 import { 
     handleAllProjectsClick,
