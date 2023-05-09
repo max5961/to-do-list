@@ -218,7 +218,7 @@ export function handleAllProjectsClick(){
 }
 
 function buildProjectsDropDown(){
-
+    // find projects button and append a new ul element
     const projectsButton = document.querySelector('.projects');
     projectsButton.insertAdjacentElement('afterend',
         new Element(
@@ -229,6 +229,7 @@ function buildProjectsDropDown(){
         ).build()
     );
     
+    // create a list of all Projects in the collection
     const projects = collection.getAllProjects();
 
     // add each Project as a list item
