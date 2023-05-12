@@ -14,14 +14,17 @@ export const Settings = {
     // the current project in the .main-content the mouse is hovering over
     currentProject : undefined,
 
+    // for mobile menu drop down
+    mobileMenu : true,
+
     // callback to be used with the 'mouseover' event
     updateCurrentTask(e){
-        this.currentTask = Settings.checkAllNodesForID(e.target,'content-taskid');
+        Settings.currentTask = Settings.checkAllNodesForID(e.target,'content-taskid');
     },
 
     // callback to be used with the 'mouseover' event
     updateCurrentProject(e){
-        this.currentProject = Settings.checkAllNodesForID(e.target, 'content-projectid');
+        Settings.currentProject = Settings.checkAllNodesForID(e.target, 'project-id');
     },
 
     checkAllNodesForID(element, attribute){

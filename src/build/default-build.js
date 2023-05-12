@@ -1,17 +1,14 @@
 import { Element } from './Element.js';
+import { ElementBuilder } from './ElementBuilder.js';
+import { Settings } from '../data/Settings.js';
+import { Event } from './event-listeners.js';
 import hamburger from '../images/hamburger.png';
-import { 
-    handleAllProjectsClick,
-    handleMobileDropDown,
-    newProject,
-        } from './interactive-build.js';
 
+class DefaultBuild {
+    static content = document.getElementById('content');
 
-const content = document.getElementById('content');
-
-function buildHeader(){
-    const header = 
-        new Element({
+    static buildHeader(){
+        return new Element({
             'tagname': 'div',
             'class': 'header',
             'children':[
@@ -28,7 +25,7 @@ function buildHeader(){
                             'tagname':'button',
                             'class': 'new-project',
                             'text-content':'New Project',
-                            'event-listeners':{'click':newProject},
+                            'event-listeners':{'click':Event.newProjectClick},
                         }).build(),
                         new Element({
                             'tagname':'button',
@@ -38,89 +35,109 @@ function buildHeader(){
                     ]
                 }).build(),
             ]
-        }).build();
+        }).build()
+    }
 
-    content.appendChild(header);
-}
-
-function buildMenu(){
-    const menu =
-        new Element({
+    static buildMenu(){
+        return new Element({
             'tagname':'div',
             'class':'menu',
-            'children':[
-                new Element({
-                    'tagname':'button',
-                    'class':'scheduled',
-                    'text-content':'Scheduled',
-                }).build(),
-                new Element({
-                    'tagname':'button',
-                    'class':'scheduled-today',
-                    'text-content':'Scheduled-today',
-                }).build(),
-                new Element({
-                    'tagname':'button',
-                    'class':'projects',
-                    'text-content':'All projects',
-                    'event-listeners':{'click':handleAllProjectsClick}
-                }).build(),
-                new Element({
-                    'tagname':'button',
-                    'class':'tasks',
-                    'text-content':'All tasks',
-                }).build(),
-            ]
+            }).build();
+    }
+
+    static buildMenuContent(){
+        return [
+            new Element({
+            'tagname':'button',
+            'class':'scheduled',
+            'text-content':'Scheduled',
+            }).build(),
+            new Element({
+                'tagname':'button',
+                'class':'scheduled-today',
+                'text-content':'Scheduled-today',
+            }).build(),
+            new Element({
+                'tagname':'button',
+                'class':'projects',
+                'text-content':'All projects',
+                'event-listeners':{'click':Event.menuProjectClick}
+            }).build(),
+            new Element({
+                'tagname':'button',
+                'class':'tasks',
+                'text-content':'All tasks',
+            }).build()
+        ]
+    }
+
+    static buildMenuHamburger(){
+        return new Element({
+            'tagname':'img',
+            'class':'menu-hamburger',
+            'src':hamburger,
+            'event-listeners':{'click':Event.createMobileDropDown},
         }).build()
+    }
 
-    content.appendChild(menu);
-}
-
-function buildMobileMenu(){
-    content.appendChild(
-        new Element({
-            'tagname':'div',
-            'class':'mobile-menu',
-            'children':[
-                new Element({
-                    'tagname':'button',
-                    'event-listeners':{
-                        'click':handleMobileDropDown,
-                    },
-                    'children':[
-                        new Element({
-                            'tagname':'img',
-                            'src':hamburger,
-                        }).build(),
-                    ]
-                }).build(),
-            ]
-        }).build()
-    );
-}
-
-function buildFooter(){
-    content.appendChild(
-        new Element({
+    static buildFooter(){
+        return new Element({
             'tagname':'div',
             'class':'footer',
         }).build()
-    )
-}
+    }
 
-function buildToDoContent(){
-    content.appendChild(
-        new Element({
+    static buildMainContent(){
+        return new Element({
             'tagname':'div',
             'class':'main-content',
-        }).build()
-    )
+        }).build();
+    }
 }
 
-export function buildUI(){
-    buildHeader();
-    buildMenu();
-    buildMobileMenu();
-    buildToDoContent();
-    buildFooter();
+export class InsertDefault extends DefaultBuild {
+
+    static appendHeader(){
+        this.content.appendChild(this.buildHeader());
+    }
+
+    static appendMenu(){
+        this.content.appendChild(this.buildMenu());
+    }
+
+    static appendMenuContent(){
+        this.buildMenuContent().forEach(tab => {
+            document.querySelector('.menu').appendChild(tab);
+        });
+    }
+
+    static appendMenuHamburger(){
+        document.querySelector('.menu').insertAdjacentElement('afterbegin', this.buildMenuHamburger());
+    }
+
+    static removeMenuContent(){
+
+        const menu = document.querySelector('.menu');
+
+        while (menu.childNodes[0] && menu.childNodes.length > 1) {
+            menu.removeChild(menu.childNodes[1]);
+        }
+    }
+
+    static appendMainContent(){
+        this.content.appendChild(this.buildMainContent());
+    }
+
+    static appendFooter(){
+        this.content.appendChild(this.buildFooter());
+    }
+
+    static appendUI(){
+        this.appendHeader();
+        this.appendMenu();
+        this.appendMenuContent();
+        this.appendMenuHamburger();
+        this.appendMainContent();
+        this.appendFooter();
+    }
 }

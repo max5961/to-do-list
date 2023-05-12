@@ -1,7 +1,9 @@
-import { Element } from '../build/Element.js';
+import { Element } from './Element.js';
+import { Event } from './event-listeners.js';
+import { Settings } from '../data/Settings.js';
 import { collection } from '../index.js';
 
-export class Build {
+export class ElementBuilder {
 
     static buildNewProjectModal(){
         const toDoContent = document.querySelector('.main-content');
@@ -14,7 +16,7 @@ export class Build {
                     new Element({
                         'tagname':'form',
                         'class':'new-project-modal',
-                        'event-listeners':{'submit':preventDefault},
+                        'event-listeners':{'submit':Event.preventDefault},
                         'children':[
             
                             // container for Project name input/label
@@ -67,7 +69,7 @@ export class Build {
                                         'type':'button',
                                         'class':'cancel-new-project',
                                         'text-content':'cancel',
-                                        'event-listeners':{'click':cancelNewProject}
+                                        'event-listeners':{'click':Event.cancelProjectClick}
                                     }).build(),
 
                                     // submit button
@@ -76,7 +78,7 @@ export class Build {
                                         'type':'submit',
                                         'class':'submit-new-project',
                                         'text-content':'Add',
-                                        'event-listeners':{'click':submitProject}
+                                        'event-listeners':{'click':Event.submitProjectClick}
                                     }).build(),
                                 ]
                             }).build(),
@@ -107,22 +109,31 @@ export class Build {
     }
 
     // adds a single project to the unordered list below the projects button
-    static addProjectToDropDown(project){
+    static addProjectsToDropDown(){
         const unorderedList = document.querySelector('ul.projects-drop-down');
 
-        unorderedList.appendChild(
-            new Element({
-                'tagname':'li',
-                'children':[
-                    new Element({
-                        'tagname':'button',
-                        'text-content':`${project.title}`,
-                        'projectID':`${project._id}`,
-                        'event-listeners':{'click':handleProjectClick}
-                    }).build(),
-                ]
-            }).build()
-        )
+        const projects = collection.getAllProjects();
+
+        for (const project of projects) {
+            insertProjectToDropDown(project);
+        }
+
+        function insertProjectToDropDown(project){
+            unorderedList.appendChild(
+                new Element({
+                    'tagname':'li',
+                    'project-id':`${project._id}`,
+                    'event-listeners':{'mouseover':Settings.updateCurrentProject},
+                    'children':[
+                        new Element({
+                            'tagname':'button',
+                            'text-content':`${project.title}`,
+                            'event-listeners':{'click':Event.menuIndividualProjectClick}
+                        }).build(),
+                    ]
+                }).build()
+            )
+        }
     }
 
     static removeProjectsDropDown(){
@@ -134,60 +145,56 @@ export class Build {
     }
 
     // displays project to .main-content
-    static buildProjectDisplay(e){
-        const project = collection.findProject(e.target.getAttribute('projectid'));
-        const toDoContent = document.querySelector('.main-content');
+    static buildProjectDisplay(project){
 
-        toDoContent.appendChild(
-            new Element({
-                'tagname':'div',
-                'class':'project-display',
-                'content-projectID':`${projectID}`,
-                'event-listeners':{'mouseover':Settings.updateCurrentProject},
-                'children':[
-                    new Element({
-                        'tagname':'h1',
-                        'class':'project-display-title',
-                        'text-content':`${project.title}`,
-                    }).build(),
-                    new Element({
-                        'tagname':'div',
-                        'class':'project-description',
-                        'text-content':`${project.desc}`
-                    }).build(),
-                    new Element({
-                        'tagname':'div',
-                        'class':'project-tasks-content',
-                        'children':[
-                            new Element({
-                                'tagname':'div',
-                                'class':'display-tasks-header',
-                                'children':[
-                                    new Element({
-                                        'tagname':'h1',
-                                        'text-content':'Tasks',
-                                    }).build(),
-                                    new Element({
-                                        'tagname':'button',
-                                        'class':'add-task',
-                                        'text-content':'+',
-                                        'event-listeners':{'click':handleNewTaskClick},
-                                    }).build(),
-                                ]
-                            }).build(),
-                            new Element({
-                                'tagname':'div',
-                                'class':'all-tasks-container',
-                            }).build(),
-                        ]
-                    }).build(),
-                ]
-            }).build()
-        );
+        return new Element({
+            'tagname':'div',
+            'class':'project-display',
+            'project-id':`${project._id}`,
+            'event-listeners':{'mouseover':Settings.updateCurrentProject},
+            'children':[
+                new Element({
+                    'tagname':'h1',
+                    'class':'project-display-title',
+                    'text-content':`${project.title}`,
+                }).build(),
+                new Element({
+                    'tagname':'div',
+                    'class':'project-description',
+                    'text-content':`${project.desc}`
+                }).build(),
+                new Element({
+                    'tagname':'div',
+                    'class':'project-tasks-content',
+                    'children':[
+                        new Element({
+                            'tagname':'div',
+                            'class':'display-tasks-header',
+                            'children':[
+                                new Element({
+                                    'tagname':'h1',
+                                    'text-content':'Tasks',
+                                }).build(),
+                                new Element({
+                                    'tagname':'button',
+                                    'class':'add-task',
+                                    'text-content':'+',
+                                    'event-listeners':{'click':Event.newTaskClick},
+                                }).build(),
+                            ]
+                        }).build(),
+                        new Element({
+                            'tagname':'div',
+                            'class':'all-tasks-container',
+                        }).build(),
+                    ]
+                }).build(),
+            ]
+        }).build()
     }
 
     // can be used as removeProjectDisplay()
-    static removeToDoContent(){
+    static removeContent(){
         const toDoContent = document.querySelector('.main-content');
 
         while (toDoContent.firstChild) {
@@ -203,7 +210,7 @@ export class Build {
             new Element({
                 'tagname':'form',
                 'class':'new-task-form',
-                'event-listeners':{'submit':preventDefault},
+                'event-listeners':{'submit':Event.preventDefault},
                 'children':[
                     new Element({
                         'tagname':'input',
@@ -270,7 +277,7 @@ export class Build {
                         'type':'submit',
                         'class':'submit-task',
                         'text-content':'Submit',
-                        'event-listeners':{'click':submitTask},
+                        'event-listeners':{'click':Event.submitTaskClick},
                     }).build(),
                 ]
             }).build()
@@ -331,11 +338,45 @@ export class Build {
         }
     }
 
+    static buildAllProjectTasks(project){
+        
+        for (const task of project.tasks) {
+            ElementBuilder.buildProjectTask(task);
+        }
+    }
+
     static removeProjectTasks(){
         const allTasksContainer = document.querySelector('.all-tasks-container');
 
         while (allTasksContainer.firstChild) {
             allTasksContainer.removeChild(allTasksContainer.firstChild);
         }
+    }
+
+    static changeNewTaskButton(){
+        const button = document.querySelector('button.add-task');
+    
+        if (!Settings.newTask) {
+            button.style.backgroundColor = 'var(--red)';
+            button.style.color = 'var(--light1)';
+            button.textContent = '-';
+        } else {
+            button.style.backgroundColor = 'var(--green)';
+            button.style.color = 'black';
+            button.textContent = '+';
+        }
+    }
+
+    static addTaskToProjectData(){
+
+        const project = collection.findProject(Settings.currentProject);
+
+        project.addTask(
+            document.querySelector('.task-name-input').value,
+            undefined,
+            document.querySelector('input[type="date"]').value,
+            document.querySelector('select.priority').value
+        )
+
     }
 }

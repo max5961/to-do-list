@@ -17,7 +17,7 @@ export class Collection {
 
     findProject(id){
         for(let index = 0; index < this.projects.length; index++){
-            if(this.projects[index]._id === id){
+            if(this.projects[index]._id == id){
                 return this.projects[index];
             }
         }

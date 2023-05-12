@@ -57,6 +57,10 @@
     height: auto;
     gap: 2px;
 }
+
+.menu .menu-hamburger {
+    display: none;
+}
     .menu button {
         width: 100%;
         height: 50px;
