@@ -1,6 +1,4 @@
 import { Element } from './Element.js';
-import { ElementBuilder } from './ElementBuilder.js';
-import { Settings } from '../data/Settings.js';
 import { Event } from './event-listeners.js';
 import hamburger from '../images/hamburger.png';
 
