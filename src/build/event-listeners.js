@@ -1,6 +1,6 @@
 import { Settings } from "../data/Settings.js";
 import { ElementBuilder } from "./ElementBuilder.js";
-import { InsertDefault } from "./default-build.js";
+import { InsertDefault } from "./DefaultBuild.js";
 import { collection } from '../index.js';
 
 export class Event {
