@@ -45,6 +45,15 @@ class DefaultBuild {
             }).build();
     }
 
+    static buildMenuHamburger(){
+        return new Element({
+            'tagname':'img',
+            'class':'menu-hamburger',
+            'src':hamburger,
+            'event-listeners':{'click':Event.createMobileDropDown},
+        }).build()
+    }
+
     static buildMenuContent(){
         return [
             new Element({
@@ -71,13 +80,11 @@ class DefaultBuild {
         ]
     }
 
-    static buildMenuHamburger(){
+    static buildMainContent(){
         return new Element({
-            'tagname':'img',
-            'class':'menu-hamburger',
-            'src':hamburger,
-            'event-listeners':{'click':Event.createMobileDropDown},
-        }).build()
+            'tagname':'div',
+            'class':'main-content',
+        }).build();
     }
 
     static buildFooter(){
@@ -86,58 +93,56 @@ class DefaultBuild {
             'class':'footer',
         }).build()
     }
-
-    static buildMainContent(){
-        return new Element({
-            'tagname':'div',
-            'class':'main-content',
-        }).build();
-    }
 }
 
-export class InsertDefault extends DefaultBuild {
+export class InsertDefaultBuild {
 
-    static appendHeader(){
-        this.content.appendChild(this.buildHeader());
+    static content = document.getElementById('content');
+
+    static insertHeader(){
+        this.content.appendChild(
+            DefaultBuild.buildHeader()
+        );
     }
 
-    static appendMenu(){
-        this.content.appendChild(this.buildMenu());
+    static insertMenu(){
+        this.content.appendChild(
+            DefaultBuild.buildMenu()
+        );
     }
 
-    static appendMenuContent(){
-        this.buildMenuContent().forEach(tab => {
-            document.querySelector('.menu').appendChild(tab);
-        });
+    static insertMenuHamburger(){
+        document.querySelector('.menu').appendChild(
+            DefaultBuild.buildMenuHamburger()
+        );
     }
 
-    static appendMenuHamburger(){
-        document.querySelector('.menu').insertAdjacentElement('afterbegin', this.buildMenuHamburger());
-    }
-
-    static removeMenuContent(){
-
+    static insertMenuContent(){
         const menu = document.querySelector('.menu');
-
-        while (menu.childNodes[0] && menu.childNodes.length > 1) {
-            menu.removeChild(menu.childNodes[1]);
+        const menuItems = DefaultBuild.buildMenuContent();
+        for (const item of menuItems) {
+            menu.appendChild(item);
         }
     }
 
-    static appendMainContent(){
-        this.content.appendChild(this.buildMainContent());
+    static insertMainContent(){
+        this.content.appendChild(
+            DefaultBuild.buildMainContent()
+        );
     }
 
-    static appendFooter(){
-        this.content.appendChild(this.buildFooter());
+    static insertFooter(){
+        this.content.appendChild(
+            DefaultBuild.buildFooter()
+        );
     }
 
-    static appendUI(){
-        this.appendHeader();
-        this.appendMenu();
-        this.appendMenuContent();
-        this.appendMenuHamburger();
-        this.appendMainContent();
-        this.appendFooter();
+    static insertDefaultUI(){
+        this.insertHeader();
+        this.insertMenu();
+        this.insertMenuHamburger();
+        this.insertMenuContent();
+        this.insertMainContent();
+        this.insertFooter();
     }
 }
