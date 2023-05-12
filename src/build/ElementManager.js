@@ -335,7 +335,6 @@ export class ElementManager {
 
     static insertProjectToMainContent(project){
         ElementRemover.removeContentFromMainContent();
-        
         document.querySelector('.main-content').appendChild(ElementBuilder.buildProjectDisplay(project));
     }
 

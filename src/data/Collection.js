@@ -23,6 +23,15 @@ export class Collection {
         }
     }
 
+    checkProjectForUniqueName(name){
+        const filteredProjects = this.projects.filter(project => project.title == name);
+        if (filteredProjects.length > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     removeProject(id){
         let index = this.findProject(id);
         this.projects.splice(index, 1);
@@ -40,17 +49,6 @@ export class Collection {
     
     getAllProjects(){
         return this.projects;
-    }
-
-    getScheduledTasks(){
-
-        let allTasks = [];
-
-        for(let i = 0; i < this.projects.length; i++){
-            allTasks.push(this.projects[i].tasks);
-        }
-        
-        return allTasks.filter(task => task.scheduled != undefined);
     }
 
     //below are rough drafts

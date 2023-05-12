@@ -25,10 +25,15 @@ export class NewProject extends Event {
         Settings.newProjectAllowed = true;
     }
 
-    static submitProjectClick(){
-        if (document.querySelector('input#name').value != '') {
+    static checkForUniqueProjectName(nameInput){
+        return collection.checkProjectForUniqueName(nameInput);
+    }
 
-            
+    static submitProjectClick(){
+        const nameInput = document.querySelector('input#name').value;
+
+        if (nameInput != '' && NewProject.checkForUniqueProjectName(nameInput)) {
+
             ElementManager.addProjectToCollection();
 
             ElementRemover.removeNewProjectModal();
@@ -45,6 +50,10 @@ export class NewProject extends Event {
             );
 
             Settings.newProjectAllowed = true;
+
+        } else {
+            
+            window.alert('There is already a project with that name');
         }
     }
 
