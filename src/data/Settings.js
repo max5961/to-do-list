@@ -1,9 +1,9 @@
 export const Settings = {
     // if true --> allow the 'New Project' button to create a form to submit a new project
-    newProject : true,
+    newProjectAllowed : true,
 
     // if true --> all projects are shown in Menu > Projects drop down
-    allProjects : true,
+    showProjectsDropDown : false,
 
     // if true --> new task form is displayed and red minimize button takes place of the add task button
     newTask : true,

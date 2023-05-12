@@ -15,7 +15,7 @@ export class Collection {
         this.projects.forEach(Project => Project.id = this);
     }
 
-    findProject(id){
+    getProject(id){
         for(let index = 0; index < this.projects.length; index++){
             if(this.projects[index]._id == id){
                 return this.projects[index];

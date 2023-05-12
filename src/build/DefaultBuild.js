@@ -1,6 +1,11 @@
 import { Element } from './Element.js';
 import { Event } from './event-listeners.js';
 import hamburger from '../images/hamburger.png';
+import { 
+    NewProject,
+    MenuContent,
+} from './event-listeners.js';
+
 
 class DefaultBuild {
     static content = document.getElementById('content');
@@ -23,7 +28,7 @@ class DefaultBuild {
                             'tagname':'button',
                             'class': 'new-project',
                             'text-content':'New Project',
-                            'event-listeners':{'click':Event.newProjectClick},
+                            'event-listeners':{'click':NewProject.newProjectClick},
                         }).build(),
                         new Element({
                             'tagname':'button',
@@ -68,7 +73,7 @@ class DefaultBuild {
                 'tagname':'button',
                 'class':'projects',
                 'text-content':'All projects',
-                'event-listeners':{'click':Event.menuProjectClick}
+                'event-listeners':{'click':MenuContent.handleProjectsDropDown}
             }).build(),
             new Element({
                 'tagname':'button',

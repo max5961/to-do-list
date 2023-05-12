@@ -1,7 +1,11 @@
-import { Element } from './Element.js';
-import { Event } from './event-listeners.js';
-import { Settings } from '../data/Settings.js';
 import { collection } from '../index.js';
+import { Element } from './Element.js';
+import { Settings } from '../data/Settings.js';
+import { Event } from './event-listeners.js';
+import { 
+        NewProject,
+        MenuContent } from './event-listeners.js';
+
 
 export class ElementBuilder {
 
@@ -66,7 +70,7 @@ export class ElementBuilder {
                                     'type':'button',
                                     'class':'cancel-new-project',
                                     'text-content':'cancel',
-                                    'event-listeners':{'click':Event.cancelProjectClick}
+                                    'event-listeners':{'click':NewProject.cancelProjectClick}
                                 }).build(),
 
                                 // submit button
@@ -75,7 +79,7 @@ export class ElementBuilder {
                                     'type':'submit',
                                     'class':'submit-new-project',
                                     'text-content':'Add',
-                                    'event-listeners':{'click':Event.submitProjectClick}
+                                    'event-listeners':{'click':NewProject.submitProjectClick}
                                 }).build(),
                             ]
                         }).build(),
@@ -86,7 +90,7 @@ export class ElementBuilder {
     }
 
     // inserts an unordered list element below the projects button in the menu
-    static buildProjectsDropDown(){
+    static buildProjectsDropDownContainer(){
         return new Element(
             {
                 'tagname':'ul',
@@ -96,7 +100,7 @@ export class ElementBuilder {
     }
 
     // adds a single project to the unordered list below the projects button
-    static addProjectsToDropDown(project){
+    static buildProjectInMenu(project){
         return new Element({
             'tagname':'li',
             'project-id':`${project._id}`,
@@ -105,7 +109,7 @@ export class ElementBuilder {
                 new Element({
                     'tagname':'button',
                     'text-content':`${project.title}`,
-                    'event-listeners':{'click':Event.menuIndividualProjectClick}
+                    'event-listeners':{'click':MenuContent.individualProjectClick}
                 }).build(),
             ]
         }).build()
@@ -265,5 +269,77 @@ export class ElementBuilder {
                 }).build(),
             ]
         }).build()
+    }
+}
+
+export class ElementRemover {
+    
+    static removeNewProjectModal(){
+        document.querySelector('.new-project-modal-container').remove();
+    }
+
+    static removeProjectsDropDown(){
+        document.querySelector('.projects-drop-down').remove();
+    }
+
+    static removeContentFromMainContent(){
+        const mainContent = document.querySelector('.main-content');
+        while (mainContent.firstChild){
+            mainContent.removeChild(mainContent.firstChild);
+        }
+    }
+
+    static removeNewTaskForm(){
+        document.querySelector('.new-task-form').remove();
+    }
+
+    static removeProjectTasks(){
+        document.querySelector('.all-tasks-container').remove();
+    }
+}
+
+export class ElementManager {
+    
+    static addProjectToCollection(){
+        collection.addProject(
+            document.querySelector('input#name').value,
+            document.querySelector('textarea#desc').value
+        )
+    }
+
+    static insertNewProjectModal(){
+        document.querySelector('.main-content').appendChild(
+            ElementBuilder.buildNewProjectModal()
+        );
+    }
+
+    static showProjectsDropDown(){
+
+        if (collection.getAllProjects().length > 0) {
+            const projectsTab = document.querySelector('button.projects');
+
+            projectsTab.insertAdjacentElement('afterend', ElementBuilder.buildProjectsDropDownContainer());
+    
+            this.appendAllProjectsToDropDown();
+        }
+    }
+    
+    static appendAllProjectsToDropDown(){
+
+        for (const project of collection.getAllProjects()) {
+
+            document.querySelector('ul.projects-drop-down').appendChild(ElementBuilder.buildProjectInMenu(project));
+
+        }
+    }
+
+    static insertProjectToMainContent(project){
+        ElementRemover.removeContentFromMainContent();
+        
+        document.querySelector('.main-content').appendChild(ElementBuilder.buildProjectDisplay(project));
+    }
+
+    static insertProjectToDropDown(){
+
     }
 }
