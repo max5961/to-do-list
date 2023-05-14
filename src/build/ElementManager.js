@@ -275,10 +275,11 @@ export class ElementBuilder {
 
     static buildEditProjectTask(task, priorityColor){
         return new Element({
-            'tagname':'div',
-            'class':'task-container',
+            'tagname':'form',
+            'class':'edit-task-container',
             'content-taskid':`${task._id}`,
             'event-listeners':{'mouseover':Settings.updateCurrentTask},
+            'event-listeners':{'submit':Event.preventDefault},
             'children':[
                 new Element({
                     'tagname':'div',
@@ -298,100 +299,103 @@ export class ElementBuilder {
                 new Element({
                     'tagname':'button',
                     'class':'edit-task',
-                    'text-content':'Edit',
+                    'text-content':'Discard',
                     'event-listeners':{'click':TaskUI.handleEditTaskClick},
                 }).build(),
                 new Element({
-                    'tagname':'form',
-                    'class':'edit-task-drop-down',
+                    'tagname':'div',
+                    'class':'notes-container',
                     'children':[
                         new Element({
-                            'tagname':'div',
-                            'class':'notes-container',
-                            'children':[
-                                new Element({
-                                    'tagname':'label',
-                                    'for':'notes',
-                                    'text-content':'Notes',
-                                }).build(),
-                                new Element({
-                                    'tagname':'textarea',
-                                    'id':'notes',
-                                }).build(),
-                            ]
+                            'tagname':'label',
+                            'for':'notes',
+                            'text-content':'Notes',
                         }).build(),
+                        new Element({
+                            'tagname':'textarea',
+                            'id':'notes',
+                        }).build(),
+                    ]
+                }).build(),
+                new Element({
+                    'tagname':'label',
+                    'class':'change-date-container',
+                    'children':[
                         new Element({
                             'tagname':'label',
-                            'class':'change-date-container',
-                            'children':[
-                                new Element({
-                                    'tagname':'label',
-                                    'text-content':'Edit Due Date',
-                                }).build(),
-                                new Element({
-                                    'tagname':'div',
-                                    'class':'change-date-buttons-container',
-                                    'children':[
-                                        new Element({
-                                            'tagname':'button',
-                                            'class':'change-date-button',
-                                            'text-content':'Today',
-                                        }).build(),
-                                        new Element({
-                                            'tagname':'button',
-                                            'class':'change-date-button',
-                                            'text-content':'Today',
-                                        }).build(),
-                                        new Element({
-                                            'tagname':'button',
-                                            'class':'change-date-button',
-                                            'text-content':'Today',
-                                        }).build(),
-                                    ]
-                                }).build(),
-                            ]
+                            'text-content':'Edit Due Date',
                         }).build(),
                         new Element({
                             'tagname':'div',
-                            'class':'priority-container',
+                            'class':'change-date-buttons-container',
                             'children':[
                                 new Element({
-                                    'tagname':'label',
-                                    'text-content':'Priority',
+                                    'tagname':'button',
+                                    'class':'change-date-button',
+                                    'text-content':'None',
                                 }).build(),
                                 new Element({
-                                    'tagname':'select',
-                                    'class':'priority',
-                                    'children':[
-                                        new Element({
-                                            'tagname':'option',
-                                            'class':'task-none',
-                                            'value':'unset',
-                                            'text-content':'none',
-                                        }).build(),
-                                        new Element({
-                                            'tagname':'option',
-                                            'class':'task-low',
-                                            'value':'low',
-                                            'text-content':'!',
-                                        }).build(),
-                                        new Element({
-                                            'tagname':'option',
-                                            'class':'task-medium',
-                                            'value':'medium',
-                                            'text-content':'!!',
-                                        }).build(),
-                                        new Element({
-                                            'tagname':'option',
-                                            'class':'task-high',
-                                            'value':'high',
-                                            'text-content':'!!!',
-                                        }).build(),
-                                    ]
+                                    'tagname':'button',
+                                    'class':'change-date-button',
+                                    'text-content':'Today',
+                                }).build(),
+                                new Element({
+                                    'tagname':'button',
+                                    'class':'change-date-button',
+                                    'text-content':'Tomorrow',
+                                }).build(),
+                                new Element({
+                                    'tagname':'input',
+                                    'type':'date',
                                 }).build(),
                             ]
                         }).build(),
                     ]
+                }).build(),
+                new Element({
+                    'tagname':'div',
+                    'class':'priority-container',
+                    'children':[
+                        new Element({
+                            'tagname':'label',
+                            'text-content':'Priority',
+                        }).build(),
+                        new Element({
+                            'tagname':'select',
+                            'class':'priority',
+                            'children':[
+                                new Element({
+                                    'tagname':'option',
+                                    'class':'task-none',
+                                    'value':'unset',
+                                    'text-content':'none',
+                                }).build(),
+                                new Element({
+                                    'tagname':'option',
+                                    'class':'task-low',
+                                    'value':'low',
+                                    'text-content':'!',
+                                }).build(),
+                                new Element({
+                                    'tagname':'option',
+                                    'class':'task-medium',
+                                    'value':'medium',
+                                    'text-content':'!!',
+                                }).build(),
+                                new Element({
+                                    'tagname':'option',
+                                    'class':'task-high',
+                                    'value':'high',
+                                    'text-content':'!!!',
+                                }).build(),
+                            ]
+                        }).build(),
+                    ]
+                }).build(),
+                new Element({
+                    'tagname':'button',
+                    'class':'submit-edit-task',
+                    'text-content':'Submit',
                 }).build(),
             ]
         }).build()

@@ -17,6 +17,8 @@ export const Settings = {
     // for mobile menu drop down
     mobileMenu : true,
 
+    editingTask : false,
+
     // callback to be used with the 'mouseover' event
     updateCurrentTask(e){
         Settings.currentTask = Settings.checkAllNodesForID(e.target,'content-taskid');

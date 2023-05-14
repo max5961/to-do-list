@@ -111,6 +111,7 @@ export class TaskUI extends Event {
             ElementManager.toggleNewTaskButton();
             ElementManager.insertTasksToProjectDisplay();
             Settings.newTaskAllowed = true;
+            Settings.editingTask = false;
         } else if (nameInput === '') {
             return
         } else {
@@ -119,7 +120,15 @@ export class TaskUI extends Event {
     }
 
     static handleEditTaskClick(){
-        ElementRemover.removeProjectTasks();
-        EditUI.insertAllTasks();
+        Settings.editingTask = !Settings.editingTask;
+
+        if (Settings.editingTask) {
+            ElementRemover.removeProjectTasks();
+            EditUI.insertAllTasks();
+        } else {
+            ElementRemover.removeProjectTasks();
+            ElementManager.insertTasksToProjectDisplay();
+        }
+
     }
 }

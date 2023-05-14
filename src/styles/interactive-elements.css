@@ -136,7 +136,8 @@
     flex-direction: column;
     gap: 10px;
 }
-.task-container {
+.task-container,
+.edit-task-container {
     display: grid;
     gap: 10px;
     grid-template-columns: 15px 1fr 100px 100px;
@@ -146,12 +147,71 @@
         background: var(--orange);
     }
 
-
-
-.mobile-menu {
-    display: none;
-    background-color: var(--medium1);
+.edit-task-container button.edit-task {
+    background-color: var(--dark-orange);
 }
-.mobile-menu > * {
-    display: none;
+
+.edit-task-container {
+    grid-template-areas:
+        "priority-color input curr-date discard"
+        ". due-date . priority"
+        ". notes notes submit"
+        ". . . ."
 }
+
+.edit-task-container .task-priority {
+    grid-area: priority-color;
+}
+.edit-task-container .task-name-edit {
+    grid-area: input;
+}
+.edit-task-container .task-date {
+    grid-area: curr-date;
+}
+.edit-task-container .task-date {
+    grid-area: curr-date;
+}
+.edit-task-container .edit-task {
+    grid-area: discard;
+}
+.edit-task-container .notes-container {
+    grid-area: notes;
+    display: flex;
+    flex-direction: column;
+}
+    .notes-container textarea {
+        resize: none;
+    }
+.edit-task-container .change-date-container {
+    grid-area: due-date;
+    display: flex;
+    flex-direction: column;
+}
+    .change-date-container .change-date-buttons-container {
+        display: flex;
+        justify-content: space-between;
+    }
+        .change-date-buttons-container > * {
+            flex-grow: 1;
+        }
+        .change-date-buttons-container input {
+            height: 101%;
+            box-sizing: border-box;
+        }
+.edit-task-container .priority-container {
+    grid-area: priority;
+    display: flex;
+    flex-direction: column;
+    align-self: end;
+    justify-self: center;
+    width: 55px;
+}
+.edit-task-container .submit-edit-task {
+    grid-area: submit;
+    height: 25px;
+    width: 55px;
+    justify-self: center;
+    align-self: end;
+    background-color: var(--green);
+}
+
