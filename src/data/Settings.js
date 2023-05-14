@@ -14,11 +14,14 @@ export const Settings = {
     // the current project in the .main-content the mouse is hovering over
     currentProject : undefined,
 
+    currentEditTask : undefined,
+
     editingTask : false,
 
     // callback to be used with the 'mouseover' event
     updateCurrentTask(e){
         Settings.currentTask = Settings.checkAllNodesForID(e.target,'content-taskid');
+        console.log(Settings.currentTask);
     },
 
     // callback to be used with the 'mouseover' event

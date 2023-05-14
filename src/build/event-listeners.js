@@ -141,11 +141,13 @@ export class TaskUI extends Event {
     }
 
     static createEditTaskForm(){
+        Settings.currentEditTask = Settings.currentTask;
         ElementRemover.removeProjectTasks();
         EditUI.insertAllTasks();
     }
 
     static minimizeEditTaskForm(){
+        Settings.currentEditTask = undefined
         ElementRemover.removeProjectTasks();
         ElementManager.insertTasksToProjectDisplay();
     }
@@ -158,7 +160,7 @@ export class TaskUI extends Event {
         EditUI.updatePriority();
     }
 
-    static handleSubmitClick(){
+    static handleSubmitEditedTaskClick(){
         
         const projectID = Settings.currentProject;
         const editedTask = EditUI.getEditedTask();

@@ -284,7 +284,7 @@ export class ElementBuilder {
             'tagname':'form',
             'class':'edit-task-container',
             'content-taskid':`${task._id}`,
-            'event-listeners':{'mouseover':Settings.updateCurrentTask},
+            'event-listeners':{'pointerover':Settings.updateCurrentTask},
             'event-listeners':{'submit':Event.preventDefault},
             'children':[
                 new Element({
@@ -409,7 +409,7 @@ export class ElementBuilder {
                     'tagname':'button',
                     'class':'submit-edit-task',
                     'text-content':'Submit',
-                    'event-listeners':{'click':TaskUI.handleSubmitClick},
+                    'event-listeners':{'click':TaskUI.handleSubmitEditedTaskClick},
                 }).build(),
             ]
         }).build()
@@ -459,7 +459,7 @@ export class ElementBuilder {
             'children':[
                 new Element({
                     'tagname':'button',
-                    'text-content':'Cancel',
+                    'text-content':'Discard',
                     'class':'cancel-project-changes',
                     'event-listeners':{'click':ProjectUI.handleCancelEdit}
                 }).build(),
@@ -697,7 +697,7 @@ export class EditUI {
 
     static updatePriority(){
         const select = document.querySelector('select.priority');
-        const taskUI = document.querySelector(`[content-taskid=${Settings.currentTask}]`);
+        const taskUI = document.querySelector(`[content-taskid=${Settings.currentEditTask}]`);
         const priorityDiv = getPriorityDiv(taskUI);
 
 
@@ -721,7 +721,7 @@ export class EditUI {
     }
 
     static getEditedTask(){
-        const editedTask = collection.getProject(Settings.currentProject).getTask(Settings.currentTask);
+        const editedTask = collection.getProject(Settings.currentProject).getTask(Settings.currentEditTask);
 
         editedTask.title = document.querySelector('.task-name-edit').value;
         editedTask.scheduled = document.querySelector('.change-date-input').value;

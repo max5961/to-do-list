@@ -145,6 +145,19 @@
     display: flex;
     flex-direction: column;
 }
+.project-display .edit-project-buttons-container {
+    align-self: end;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5px;
+}
+    .edit-project-buttons-container .cancel-project-changes {
+        background-color: var(--red);
+    }
+    .edit-project-buttons-container .submit-project-changes {
+        background-color: var(--green);
+    }
 
 .all-tasks-container {
     width: 100%;
