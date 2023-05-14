@@ -125,6 +125,12 @@ export class ElementBuilder {
             'event-listeners':{'mouseover':Settings.updateCurrentProject},
             'children':[
                 new Element({
+                    'tagname':'button',
+                    'class':'edit-project',
+                    'text-content':'Edit',
+                    'event-listeners':{'click':TaskUI.handleEditProjectClick},
+                }).build(),
+                new Element({
                     'tagname':'h1',
                     'class':'project-display-title',
                     'text-content':`${project.title}`,
@@ -408,6 +414,64 @@ export class ElementBuilder {
             ]
         }).build()
     }
+
+    static buildEditProjectName(project){
+        return new Element({
+            'tagname':'div',
+            'class':'project-display-title-container',
+            'value':`${project.title}`,
+            'children':[
+                new Element({
+                    'tagname':'label',
+                    'text-content':'Project Name',
+                }).build(),
+                new Element({
+                    'tagname':'input',
+                    'class':'project-display-title',
+                    'value':`${project.title}`,
+                }).build(),
+            ]
+        }).build();
+    }
+
+    static buildEditProjectDesc(project){
+        return new Element({
+            'tagname':'div',
+            'class':'project-description-container',
+            'children':[
+                new Element({
+                    'tagname':'label',
+                    'text-content':'Project Description',
+                }).build(),
+                new Element({
+                    'tagname':'textarea',
+                    'class':'project-description',
+                    'text-content':`${project.desc}`,
+                }).build()
+            ]
+        }).build();
+    }
+
+    static buildEditProjectButtons(){
+        return new Element({
+            'tagname':'div',
+            'class':'edit-project-buttons-container',
+            'children':[
+                new Element({
+                    'tagname':'button',
+                    'text-content':'Cancel',
+                    'class':'cancel-project-changes',
+                    'event-listeners':{'click':ProjectUI.handleCancelEdit}
+                }).build(),
+                new Element({
+                    'tagname':'button',
+                    'class':'submit-project-changes',
+                    'text-content':'Submit',
+                    'event-listeners':{'click':ProjectUI.handleSubmitEdit}
+                }).build(),
+            ]
+        }).build();
+    }
 }
 
 export class ElementRemover {
@@ -500,8 +564,8 @@ export class ElementManager {
     }
 
     static addTaskToProject(){
-        const project = collection.getProject(Settings.currentProject);
-        project.addTask(
+        const projectIndex = collection.findProject(Settings.currentProject);
+        collection.projects[projectIndex].addTask(
             document.querySelector('.task-name-input').value,
             document.querySelector('input[type="date"]').value,
             document.querySelector('select.priority').value
@@ -667,4 +731,22 @@ export class EditUI {
         return editedTask;
     }
 
+    static changeProjectDisplayToEdit(project){
+        const h1 = document.querySelector('h1.project-display-title');
+        const desc = document.querySelector('.project-description');
+        const editProjectButton = document.querySelector('button.edit-project');
+        h1.remove();
+        desc.remove();
+        editProjectButton.remove();
+
+        const projectContainer = document.querySelector('.project-display');
+        const controlButtons = ElementBuilder.buildEditProjectButtons();
+        const titleInput = ElementBuilder.buildEditProjectName(project);
+        const descTextarea = ElementBuilder.buildEditProjectDesc(project);
+
+        projectContainer.insertAdjacentElement('afterbegin',descTextarea);
+        projectContainer.insertAdjacentElement('afterbegin',titleInput);
+        projectContainer.insertAdjacentElement('afterbegin',controlButtons);
+        
+    }
 }

@@ -60,6 +60,26 @@ export class ProjectUI extends Event {
         }
     }
 
+    static handleSubmitEdit(){
+        const projectIndex = collection.findProject(Settings.currentProject);
+        collection.projects[projectIndex].title = document.querySelector('input.project-display-title').value;
+        collection.projects[projectIndex].desc = document.querySelector('textarea.project-description').value;
+
+        ElementRemover.removeContentFromMainContent();
+        ElementManager.insertProjectToMainContent(collection.getProject(Settings.currentProject));
+        ElementManager.insertTasksToProjectDisplay();
+
+        Settings.showProjectsDropDown = true;
+        MenuUI.handleProjectsDropDown();
+
+    }
+
+    static handleCancelEdit(){
+        ElementRemover.removeContentFromMainContent();
+        ElementManager.insertProjectToMainContent(collection.getProject(Settings.currentProject));
+        ElementManager.insertTasksToProjectDisplay();
+    }
+
 }
 
 export class MenuUI extends Event {
@@ -148,5 +168,10 @@ export class TaskUI extends Event {
             ElementRemover.removeProjectTasks();
             ElementManager.insertTasksToProjectDisplay();
         }
+    }
+
+    static handleEditProjectClick(){
+        const project = collection.getProject(Settings.currentProject);
+        EditUI.changeProjectDisplayToEdit(project);
     }
 }

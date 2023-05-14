@@ -64,6 +64,14 @@
     background-color: var(--medium2);
     color: var(--light1);
 }
+    .project-display button.edit-project {
+        background-color: var(--orange);
+        align-self: flex-end;
+        width: 100px;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+
     .project-display h1.project-display-title {
         margin: 0;
         padding-bottom: 10px;
@@ -128,6 +136,15 @@
         background-color: var(--priority-red);
         text-align: center;
     }
+
+.project-display .project-display-title-container {
+    display: flex;
+    flex-direction: column;
+}
+.project-display .project-description-container {
+    display: flex;
+    flex-direction: column;
+}
 
 .all-tasks-container {
     width: 100%;
