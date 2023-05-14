@@ -3,13 +3,14 @@ import { Element } from './Element.js';
 import { Settings } from '../data/Settings.js';
 import { Event } from './event-listeners.js';
 import { 
-        NewProject,
-        MenuContent } from './event-listeners.js';
+        ProjectUI,
+        MenuUI,
+        TaskUI } from './event-listeners.js';
 
 
 export class ElementBuilder {
 
-    static buildNewProjectModal(){
+    static buildProjectUIModal(){
         return new Element({
             'tagname':'div',
             'class':'new-project-modal-container',
@@ -70,7 +71,7 @@ export class ElementBuilder {
                                     'type':'button',
                                     'class':'cancel-new-project',
                                     'text-content':'cancel',
-                                    'event-listeners':{'click':NewProject.cancelProjectClick}
+                                    'event-listeners':{'click':ProjectUI.cancelProjectClick}
                                 }).build(),
 
                                 // submit button
@@ -79,7 +80,7 @@ export class ElementBuilder {
                                     'type':'submit',
                                     'class':'submit-new-project',
                                     'text-content':'Add',
-                                    'event-listeners':{'click':NewProject.submitProjectClick}
+                                    'event-listeners':{'click':ProjectUI.submitProjectClick}
                                 }).build(),
                             ]
                         }).build(),
@@ -109,7 +110,7 @@ export class ElementBuilder {
                 new Element({
                     'tagname':'button',
                     'text-content':`${project.title}`,
-                    'event-listeners':{'click':MenuContent.individualProjectClick}
+                    'event-listeners':{'click':MenuUI.individualProjectClick}
                 }).build(),
             ]
         }).build()
@@ -149,7 +150,7 @@ export class ElementBuilder {
                                     'tagname':'button',
                                     'class':'add-task',
                                     'text-content':'+',
-                                    'event-listeners':{'click':Event.newTaskClick},
+                                    'event-listeners':{'click':TaskUI.newTaskClick},
                                 }).build(),
                             ]
                         }).build(),
@@ -234,7 +235,7 @@ export class ElementBuilder {
                     'type':'submit',
                     'class':'submit-task',
                     'text-content':'Submit',
-                    'event-listeners':{'click':Event.submitTaskClick},
+                    'event-listeners':{'click':TaskUI.submitNewTask},
                 }).build(),
             ]
         }).build()
@@ -266,6 +267,131 @@ export class ElementBuilder {
                     'tagname':'button',
                     'class':'edit-task',
                     'text-content':'Edit',
+                    'event-listeners':{'click':TaskUI.handleEditTaskClick},
+                }).build(),
+            ]
+        }).build()
+    }
+
+    static buildEditProjectTask(task, priorityColor){
+        return new Element({
+            'tagname':'div',
+            'class':'task-container',
+            'content-taskid':`${task._id}`,
+            'event-listeners':{'mouseover':Settings.updateCurrentTask},
+            'children':[
+                new Element({
+                    'tagname':'div',
+                    'class':'task-priority',
+                    'style':{backgroundColor:`${priorityColor}`},
+                }).build(),
+                new Element({
+                    'tagname':'input',
+                    'class':'task-name-edit',
+                    'value':`${task.title}`,
+                }).build(),
+                new Element({
+                    'tagname':'div',
+                    'class':'task-date',
+                    'text-content':`${task.scheduled}`,
+                }).build(),
+                new Element({
+                    'tagname':'button',
+                    'class':'edit-task',
+                    'text-content':'Edit',
+                    'event-listeners':{'click':TaskUI.handleEditTaskClick},
+                }).build(),
+                new Element({
+                    'tagname':'form',
+                    'class':'edit-task-drop-down',
+                    'children':[
+                        new Element({
+                            'tagname':'div',
+                            'class':'notes-container',
+                            'children':[
+                                new Element({
+                                    'tagname':'label',
+                                    'for':'notes',
+                                    'text-content':'Notes',
+                                }).build(),
+                                new Element({
+                                    'tagname':'textarea',
+                                    'id':'notes',
+                                }).build(),
+                            ]
+                        }).build(),
+                        new Element({
+                            'tagname':'label',
+                            'class':'change-date-container',
+                            'children':[
+                                new Element({
+                                    'tagname':'label',
+                                    'text-content':'Edit Due Date',
+                                }).build(),
+                                new Element({
+                                    'tagname':'div',
+                                    'class':'change-date-buttons-container',
+                                    'children':[
+                                        new Element({
+                                            'tagname':'button',
+                                            'class':'change-date-button',
+                                            'text-content':'Today',
+                                        }).build(),
+                                        new Element({
+                                            'tagname':'button',
+                                            'class':'change-date-button',
+                                            'text-content':'Today',
+                                        }).build(),
+                                        new Element({
+                                            'tagname':'button',
+                                            'class':'change-date-button',
+                                            'text-content':'Today',
+                                        }).build(),
+                                    ]
+                                }).build(),
+                            ]
+                        }).build(),
+                        new Element({
+                            'tagname':'div',
+                            'class':'priority-container',
+                            'children':[
+                                new Element({
+                                    'tagname':'label',
+                                    'text-content':'Priority',
+                                }).build(),
+                                new Element({
+                                    'tagname':'select',
+                                    'class':'priority',
+                                    'children':[
+                                        new Element({
+                                            'tagname':'option',
+                                            'class':'task-none',
+                                            'value':'unset',
+                                            'text-content':'none',
+                                        }).build(),
+                                        new Element({
+                                            'tagname':'option',
+                                            'class':'task-low',
+                                            'value':'low',
+                                            'text-content':'!',
+                                        }).build(),
+                                        new Element({
+                                            'tagname':'option',
+                                            'class':'task-medium',
+                                            'value':'medium',
+                                            'text-content':'!!',
+                                        }).build(),
+                                        new Element({
+                                            'tagname':'option',
+                                            'class':'task-high',
+                                            'value':'high',
+                                            'text-content':'!!!',
+                                        }).build(),
+                                    ]
+                                }).build(),
+                            ]
+                        }).build(),
+                    ]
                 }).build(),
             ]
         }).build()
@@ -274,7 +400,7 @@ export class ElementBuilder {
 
 export class ElementRemover {
     
-    static removeNewProjectModal(){
+    static removeProjectUIModal(){
         document.querySelector('.new-project-modal-container').remove();
     }
 
@@ -294,7 +420,10 @@ export class ElementRemover {
     }
 
     static removeProjectTasks(){
-        document.querySelector('.all-tasks-container').remove();
+        const allTasksContainer = document.querySelector('.all-tasks-container');
+        while (allTasksContainer.firstChild) {
+            allTasksContainer.removeChild(allTasksContainer.firstChild);
+        }
     }
 }
 
@@ -307,9 +436,9 @@ export class ElementManager {
         )
     }
 
-    static insertNewProjectModal(){
+    static insertProjectUIModal(){
         document.querySelector('.main-content').appendChild(
-            ElementBuilder.buildNewProjectModal()
+            ElementBuilder.buildProjectUIModal()
         );
     }
 
@@ -338,7 +467,95 @@ export class ElementManager {
         document.querySelector('.main-content').appendChild(ElementBuilder.buildProjectDisplay(project));
     }
 
-    static insertProjectToDropDown(){
+    static insertNewTaskForm(){
+        document.querySelector('.all-tasks-container').insertAdjacentElement('afterbegin', ElementBuilder.buildNewTaskForm());
+    }
 
+    static toggleNewTaskButton(){
+        const button = document.querySelector('button.add-task');
+
+        Settings.newTaskAllowed ? changeToMinimize(button) : changeToMaximize(button);
+
+        function changeToMinimize(){
+            button.style.backgroundColor = 'var(--red)';
+            button.textContent = '-';
+        }
+
+        function changeToMaximize(){
+            button.style.backgroundColor = 'var(--green)';
+            button.textContent = '+';
+        }
+    }
+
+    static addTaskToProject(){
+        const project = collection.getProject(Settings.currentProject);
+        project.addTask(
+            document.querySelector('.task-name-input').value,
+            document.querySelector('input[type="date"]').value,
+            document.querySelector('select.priority').value
+        )
+    }
+
+    static checkForUniqueTaskName(nameInput){
+        const project = collection.getProject(Settings.currentProject);
+        return project.checkForUniqueTaskName(nameInput);
+    }
+
+    static insertTask(task, priorityColor){
+        document.querySelector('.all-tasks-container').appendChild(
+            ElementBuilder.buildProjectTask(task, priorityColor)
+        );
+    }
+
+    static insertTasksToProjectDisplay(){
+
+        const project = collection.getProject(Settings.currentProject);
+
+        for (const task of project.tasks) {
+
+            const priorityColor = ElementManager.getPriorityColor(task);
+
+            ElementManager.insertTask(task, priorityColor);
+
+        };
+    }
+
+    static getPriorityColor(task){
+        if (task.priority === 'unset') {
+            return 'var(--priority-unset)';
+        } else if (task.priority === 'low') {
+            return 'var(--priority-green)';
+        } else if (task.priority === 'medium') {
+            return 'var(--priority-yellow)';
+        } else if (task.priority === 'high') {
+            return 'var(--priority-red)';
+        }
+    }
+}
+
+export class EditUI {
+
+    static insertAllTasks(){
+
+        const currentProject = collection.getProject(Settings.currentProject);
+        const currentTask = currentProject.getTask(Settings.currentTask);
+        const allTasksContainer = document.querySelector('.all-tasks-container');
+        
+        for (const task of currentProject.tasks) {
+
+            const priorityColor = ElementManager.getPriorityColor(task);
+
+            if (task === currentTask) {
+
+                allTasksContainer.appendChild(
+                    ElementBuilder.buildEditProjectTask(task, priorityColor)
+                );
+
+            } else {
+                allTasksContainer.appendChild(
+                    ElementBuilder.buildProjectTask(task, priorityColor)
+                );
+            }
+        }
     }
 }

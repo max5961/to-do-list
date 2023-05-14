@@ -1,8 +1,10 @@
 import { collection } from '../index.js';
 import { Settings } from '../data/Settings.js';
 import { 
+    ElementBuilder,
     ElementManager,
-    ElementRemover, } from './ElementManager.js';
+    ElementRemover,
+    EditUI, } from './ElementManager.js';
 
 export class Event {
 
@@ -11,17 +13,17 @@ export class Event {
     }
 }
 
-export class NewProject extends Event {
+export class ProjectUI extends Event {
 
     static newProjectClick(){
         if (Settings.newProjectAllowed) {
-            ElementManager.insertNewProjectModal();
+            ElementManager.insertProjectUIModal();
             Settings.newProjectAllowed = false;
         }
     }
      
     static cancelProjectClick(){
-        ElementRemover.removeNewProjectModal();
+        ElementRemover.removeProjectUIModal();
         Settings.newProjectAllowed = true;
     }
 
@@ -32,11 +34,11 @@ export class NewProject extends Event {
     static submitProjectClick(){
         const nameInput = document.querySelector('input#name').value;
 
-        if (nameInput != '' && NewProject.checkForUniqueProjectName(nameInput)) {
+        if (nameInput != '' && ProjectUI.checkForUniqueProjectName(nameInput)) {
 
             ElementManager.addProjectToCollection();
 
-            ElementRemover.removeNewProjectModal();
+            ElementRemover.removeProjectUIModal();
 
             if(document.querySelector('ul.projects-drop-down')){
                 ElementRemover.removeProjectsDropDown();
@@ -51,15 +53,16 @@ export class NewProject extends Event {
 
             Settings.newProjectAllowed = true;
 
+        } else if (nameInput === '') {
+            return
         } else {
-            
-            window.alert('There is already a project with that name');
+            window.alert('There is already a project with that name!');
         }
     }
 
 }
 
-export class MenuContent extends Event {
+export class MenuUI extends Event {
 
     static handleProjectsDropDown(){
 
@@ -82,5 +85,41 @@ export class MenuContent extends Event {
 
     static individualProjectClick(){
         ElementManager.insertProjectToMainContent(collection.getProject(Settings.currentProject));
+    }
+}
+
+export class TaskUI extends Event {
+
+    static newTaskClick(){
+        if (Settings.newTaskAllowed) {
+            ElementManager.insertNewTaskForm();
+            ElementManager.toggleNewTaskButton()
+            Settings.newTaskAllowed = false;
+        } else {
+            ElementRemover.removeNewTaskForm();
+            ElementManager.toggleNewTaskButton();
+            Settings.newTaskAllowed = true;
+        }
+    }
+
+    static submitNewTask(){
+        const nameInput = document.querySelector('.task-name-input').value;
+        if (nameInput != '' && ElementManager.checkForUniqueTaskName(nameInput)) {
+            ElementManager.addTaskToProject();
+            ElementRemover.removeNewTaskForm();
+            ElementRemover.removeProjectTasks();
+            ElementManager.toggleNewTaskButton();
+            ElementManager.insertTasksToProjectDisplay();
+            Settings.newTaskAllowed = true;
+        } else if (nameInput === '') {
+            return
+        } else {
+            window.alert('There is already a task with that name!')
+        }
+    }
+
+    static handleEditTaskClick(){
+        ElementRemover.removeProjectTasks();
+        EditUI.insertAllTasks();
     }
 }

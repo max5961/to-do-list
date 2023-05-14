@@ -40,12 +40,20 @@ export class Project{
 
     addTask(
         title = undefined,
-        desc = undefined,
         scheduled = undefined,
         priority = undefined,
     ){
-        this.tasks.push(new Task(title, desc, scheduled, priority));
+        this.tasks.push(new Task(title, scheduled, priority));
         this.setTaskIDs();
+    }
+
+    checkForUniqueTaskName(name){
+        const copiedNames = this.tasks.filter(task => task.title == name);
+        if (copiedNames.length > 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     setTaskIDs(){
@@ -53,10 +61,10 @@ export class Project{
         this.tasks.forEach(task => task.id = this);
     }
 
-    findTask(id){
+    getTask(id){
         for(let index = 0; index < this.tasks.length; index++){
             if(this.tasks[index]._id === id){
-                return index;
+                return this.tasks[index];
             }
         }
     }

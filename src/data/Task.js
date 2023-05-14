@@ -1,9 +1,9 @@
 export class Task {
-    constructor(title, desc, scheduled, priority){
+    constructor(title, scheduled, priority){
         this.title = title;
-        this.desc = desc;
         this.scheduled = scheduled;
         this.priority = priority;
+        this.desc = undefined;
         this.completed = false;
         this._id = null;
     }

@@ -6,7 +6,7 @@ export const Settings = {
     showProjectsDropDown : false,
 
     // if true --> new task form is displayed and red minimize button takes place of the add task button
-    newTask : true,
+    newTaskAllowed : true,
 
     // the current task the mouse is hovering over
     currentTask : undefined,

@@ -2,8 +2,8 @@ import { Element } from './Element.js';
 import { Event } from './event-listeners.js';
 import hamburger from '../images/hamburger.png';
 import { 
-    NewProject,
-    MenuContent,
+    ProjectUI,
+    MenuUI,
 } from './event-listeners.js';
 
 
@@ -28,7 +28,7 @@ class DefaultBuild {
                             'tagname':'button',
                             'class': 'new-project',
                             'text-content':'New Project',
-                            'event-listeners':{'click':NewProject.newProjectClick},
+                            'event-listeners':{'click':ProjectUI.newProjectClick},
                         }).build(),
                         new Element({
                             'tagname':'button',
@@ -57,7 +57,7 @@ class DefaultBuild {
         }).build()
     }
 
-    static buildMenuContent(){
+    static buildMenuUI(){
         return [
             new Element({
             'tagname':'button',
@@ -73,7 +73,7 @@ class DefaultBuild {
                 'tagname':'button',
                 'class':'projects',
                 'text-content':'All projects',
-                'event-listeners':{'click':MenuContent.handleProjectsDropDown}
+                'event-listeners':{'click':MenuUI.handleProjectsDropDown}
             }).build(),
             new Element({
                 'tagname':'button',
@@ -120,9 +120,9 @@ export class InsertDefaultBuild {
         );
     }
 
-    static insertMenuContent(){
+    static insertMenuUI(){
         const menu = document.querySelector('.menu');
-        const menuItems = DefaultBuild.buildMenuContent();
+        const menuItems = DefaultBuild.buildMenuUI();
         for (const item of menuItems) {
             menu.appendChild(item);
         }
@@ -144,7 +144,7 @@ export class InsertDefaultBuild {
         this.insertHeader();
         this.insertMenu();
         this.insertMenuHamburger();
-        this.insertMenuContent();
+        this.insertMenuUI();
         this.insertMainContent();
         this.insertFooter();
     }
