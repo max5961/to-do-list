@@ -3,7 +3,7 @@ export class Task {
         this.title = title;
         this.scheduled = scheduled;
         this.priority = priority;
-        this.desc = undefined;
+        this.desc = '';
         this.completed = false;
         this._id = null;
     }

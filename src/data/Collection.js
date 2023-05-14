@@ -23,6 +23,14 @@ export class Collection {
         }
     }
 
+    findProject(id){
+        for(let index = 0; index < this.projects.length; index++){
+            if(this.projects[index]._id == id){
+                return index;
+            }
+        }
+    }
+
     checkProjectForUniqueName(name){
         const filteredProjects = this.projects.filter(project => project.title == name);
         if (filteredProjects.length > 0) {
@@ -41,6 +49,18 @@ export class Collection {
         const index = this.findProject(id);
 
         this.projects[index].addTask();
+    }
+
+    replaceTaskInProject(projectID, editedTask){
+        const index = this.findProject(projectID);
+
+        this.projects[index].tasks.map(replaceTask)
+
+        function replaceTask(task){
+            if (task === editedTask) {
+                return editedTask;
+            }
+        }
     }
 
     getAllTasks(){

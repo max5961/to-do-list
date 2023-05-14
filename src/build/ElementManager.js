@@ -1,3 +1,4 @@
+import { add, format } from 'date-fns';
 import { collection } from '../index.js';
 import { Element } from './Element.js';
 import { Settings } from '../data/Settings.js';
@@ -6,7 +7,6 @@ import {
         ProjectUI,
         MenuUI,
         TaskUI } from './event-listeners.js';
-
 
 export class ElementBuilder {
 
@@ -267,7 +267,7 @@ export class ElementBuilder {
                     'tagname':'button',
                     'class':'edit-task',
                     'text-content':'Edit',
-                    'event-listeners':{'click':TaskUI.handleEditTaskClick},
+                    'event-listeners':{'click':TaskUI.createEditTaskForm},
                 }).build(),
             ]
         }).build()
@@ -289,6 +289,7 @@ export class ElementBuilder {
                 new Element({
                     'tagname':'input',
                     'class':'task-name-edit',
+                    'required':'true',
                     'value':`${task.title}`,
                 }).build(),
                 new Element({
@@ -300,7 +301,7 @@ export class ElementBuilder {
                     'tagname':'button',
                     'class':'edit-task',
                     'text-content':'Discard',
-                    'event-listeners':{'click':TaskUI.handleEditTaskClick},
+                    'event-listeners':{'click':TaskUI.minimizeEditTaskForm},
                 }).build(),
                 new Element({
                     'tagname':'div',
@@ -331,21 +332,26 @@ export class ElementBuilder {
                             'children':[
                                 new Element({
                                     'tagname':'button',
-                                    'class':'change-date-button',
+                                    'class':'change-date-button-none',
+                                    'event-listeners':{'click':TaskUI.handleEditDate},
                                     'text-content':'None',
                                 }).build(),
                                 new Element({
                                     'tagname':'button',
-                                    'class':'change-date-button',
+                                    'class':'change-date-button-today',
+                                    'event-listeners':{'click':TaskUI.handleEditDate},
                                     'text-content':'Today',
                                 }).build(),
                                 new Element({
                                     'tagname':'button',
-                                    'class':'change-date-button',
+                                    'class':'change-date-button-tomorrow',
+                                    'event-listeners':{'click':TaskUI.handleEditDate},
                                     'text-content':'Tomorrow',
                                 }).build(),
                                 new Element({
                                     'tagname':'input',
+                                    'class':'change-date-input',
+                                    'event-listeners':{'input':TaskUI.handleEditDate},
                                     'type':'date',
                                 }).build(),
                             ]
@@ -363,6 +369,7 @@ export class ElementBuilder {
                         new Element({
                             'tagname':'select',
                             'class':'priority',
+                            'event-listeners':{'change':TaskUI.handleEditPriority},
                             'children':[
                                 new Element({
                                     'tagname':'option',
@@ -396,6 +403,7 @@ export class ElementBuilder {
                     'tagname':'button',
                     'class':'submit-edit-task',
                     'text-content':'Submit',
+                    'event-listeners':{'click':TaskUI.handleSubmitClick},
                 }).build(),
             ]
         }).build()
@@ -538,7 +546,8 @@ export class ElementManager {
 }
 
 export class EditUI {
-
+    
+    // inserts all tasks but the current task being edited is inserted with a form instead
     static insertAllTasks(){
 
         const currentProject = collection.getProject(Settings.currentProject);
@@ -555,6 +564,8 @@ export class EditUI {
                     ElementBuilder.buildEditProjectTask(task, priorityColor)
                 );
 
+                EditUI.setValues(task);
+
             } else {
                 allTasksContainer.appendChild(
                     ElementBuilder.buildProjectTask(task, priorityColor)
@@ -562,4 +573,98 @@ export class EditUI {
             }
         }
     }
+
+    static setValues(task){
+        const select = document.querySelector('select.priority');
+        select.value = task.priority;
+
+        const date = document.querySelector('.change-date-input');
+        date.value = task.scheduled;
+
+        const notes = document.querySelector('textarea#notes');
+        notes.value = task.desc;
+    }
+
+    static updateDateValue(e){
+        const none = document.querySelector('.change-date-button-none');
+        const today = document.querySelector('.change-date-button-today');
+        const tomorrow = document.querySelector('.change-date-button-tomorrow');
+        const input = document.querySelector('.change-date-input');
+
+        const dateToday = format(new Date(), 'yyyy-MM-dd');
+        const dateTomorrow = format(add(new Date(), {days: 1}), 'yyyy-MM-dd');
+
+        if (e.target === none) {
+            EditUI.toggleDateButtons(e,none,today,tomorrow,input);
+            input.value = null;
+        } else if (e.target === today) {
+            EditUI.toggleDateButtons(e,none,today,tomorrow,input);
+            input.value = dateToday;
+        } else if (e.target === tomorrow) {
+            EditUI.toggleDateButtons(e,none,today,tomorrow,input);
+            input.value = dateTomorrow;
+        } else if (e.target === input) {
+            EditUI.toggleDateButtons(e,none,today,tomorrow,input);
+        }
+
+    }
+
+    static toggleDateButtons(e, none=undefined, today=undefined,tomorrow=undefined,input=undefined){
+        const color = 'var(--light2)';
+        const buttons = [none,today,tomorrow];
+
+        if (e.target === none) {
+            EditUI.resetButtons(buttons);
+            none.style.backgroundColor = color;
+        } else if (e.target === today) {
+            EditUI.resetButtons(buttons);
+            today.style.backgroundColor = color;
+        } else if (e.target === tomorrow) {
+            EditUI.resetButtons(buttons);
+            tomorrow.style.backgroundColor = color;
+        } else if (e.target === input) {
+            EditUI.resetButtons(buttons);
+        }
+    }
+
+    static resetButtons(buttons){
+        buttons.forEach(button => button.style.backgroundColor = 'var(--light1');
+    }
+
+    static updatePriority(){
+        const select = document.querySelector('select.priority');
+        const taskUI = document.querySelector(`[content-taskid=${Settings.currentTask}]`);
+        const priorityDiv = getPriorityDiv(taskUI);
+
+
+        if (select.value === 'unset') {
+            priorityDiv.style.backgroundColor = 'var(--priority-unset)';
+        } else if (select.value === 'low') {
+            priorityDiv.style.backgroundColor = 'var(--priority-green)';
+        } else if (select.value === 'medium') {
+            priorityDiv.style.backgroundColor = 'var(--priority-yellow)';
+        } else if (select.value === 'high') {
+            priorityDiv.style.backgroundColor = 'var(--priority-red)';
+        }
+
+        function getPriorityDiv(taskUI){
+            for (const child of taskUI.childNodes) {
+                if (child.className === 'task-priority') {
+                    return child;
+                }
+            }
+        }
+    }
+
+    static getEditedTask(){
+        const editedTask = collection.getProject(Settings.currentProject).getTask(Settings.currentTask);
+
+        editedTask.title = document.querySelector('.task-name-edit').value;
+        editedTask.scheduled = document.querySelector('.change-date-input').value;
+        editedTask.priority = document.querySelector('select.priority').value;
+        editedTask.desc = document.querySelector('textarea#notes').value;
+
+        return editedTask;
+    }
+
 }

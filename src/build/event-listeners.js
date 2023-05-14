@@ -85,6 +85,7 @@ export class MenuUI extends Event {
 
     static individualProjectClick(){
         ElementManager.insertProjectToMainContent(collection.getProject(Settings.currentProject));
+        ElementManager.insertTasksToProjectDisplay();
     }
 }
 
@@ -119,16 +120,33 @@ export class TaskUI extends Event {
         }
     }
 
-    static handleEditTaskClick(){
-        Settings.editingTask = !Settings.editingTask;
+    static createEditTaskForm(){
+        ElementRemover.removeProjectTasks();
+        EditUI.insertAllTasks();
+    }
 
-        if (Settings.editingTask) {
-            ElementRemover.removeProjectTasks();
-            EditUI.insertAllTasks();
-        } else {
+    static minimizeEditTaskForm(){
+        ElementRemover.removeProjectTasks();
+        ElementManager.insertTasksToProjectDisplay();
+    }
+
+    static handleEditDate(e){
+        EditUI.updateDateValue(e);
+    }
+
+    static handleEditPriority(){
+        EditUI.updatePriority();
+    }
+
+    static handleSubmitClick(){
+        
+        const projectID = Settings.currentProject;
+        const editedTask = EditUI.getEditedTask();
+
+        if (document.querySelector('.task-name-edit').value != '') {
+            collection.replaceTaskInProject(projectID, editedTask)
             ElementRemover.removeProjectTasks();
             ElementManager.insertTasksToProjectDisplay();
         }
-
     }
 }

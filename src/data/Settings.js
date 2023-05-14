@@ -14,9 +14,6 @@ export const Settings = {
     // the current project in the .main-content the mouse is hovering over
     currentProject : undefined,
 
-    // for mobile menu drop down
-    mobileMenu : true,
-
     editingTask : false,
 
     // callback to be used with the 'mouseover' event

@@ -154,9 +154,9 @@
 .edit-task-container {
     grid-template-areas:
         "priority-color input curr-date discard"
-        ". due-date . priority"
-        ". notes notes submit"
-        ". . . ."
+        "priority-color due-date . priority"
+        "priority-color notes notes submit"
+        "priority-color . . ."
 }
 
 .edit-task-container .task-priority {
@@ -193,6 +193,7 @@
     }
         .change-date-buttons-container > * {
             flex-grow: 1;
+            background-color: var(--light1);
         }
         .change-date-buttons-container input {
             height: 101%;
