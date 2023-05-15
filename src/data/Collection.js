@@ -1,4 +1,5 @@
 import { Project } from './Project.js';
+import { add, format } from 'date-fns';
 
 export class Collection {
     constructor(){
@@ -79,7 +80,7 @@ export class Collection {
     getAllScheduledTodayTasks(){
         const allTasks = this.getAllScheduledTasks();
 
-        const currDate = new Date();
+        const currDate = format(new Date(), 'yyyy-MM-dd');
         
         return allTasks.filter(task => task.scheduled == currDate);
     }

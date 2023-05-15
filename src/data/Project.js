@@ -1,4 +1,6 @@
 import { Task } from './Task.js';
+import { collection } from '../index.js';
+import { add, format } from 'date-fns'
 
 export class Project{
     constructor(title, desc){
@@ -42,7 +44,7 @@ export class Project{
         title = undefined,
         scheduled = undefined,
         priority = undefined,
-    ){
+    ){  
         this.tasks.push(new Task(title, scheduled, priority));
         this.setTaskIDs();
     }

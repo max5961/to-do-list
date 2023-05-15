@@ -511,9 +511,19 @@ export class ElementBuilder {
                                     'children':[
                                         new Element({
                                             'tagname':'option',
+                                            'class':'order-name-asc',
+                                            'text-content':'name asc',
+                                            'selected':'true',
+                                        }).build(),
+                                        new Element({
+                                            'tagname':'option',
+                                            'class':'order-name-desc',
+                                            'text-content':'name desc',
+                                        }).build(),
+                                        new Element({
+                                            'tagname':'option',
                                             'class':'order-date-newest',
                                             'text-content':'date newest',
-                                            'selected':'true',
                                         }).build(),
                                         new Element({
                                             'tagname':'option',
@@ -841,5 +851,20 @@ export class ScheduledTasks {
             container.appendChild(ElementBuilder.buildProjectTask(task, priorityColor));
 
         }
+    }
+
+    // scheduledType parameter should be either 'scheduled' or 'scheduled-today'
+    static displayScheduledTasks(scheduledType){
+        let tasks;
+
+        if (scheduledType === 'scheduled') {
+            tasks = collection.getAllScheduledTasks();
+        } else if (scheduledType === 'scheduled-today') {
+            tasks = collection.getAllScheduledTodayTasks();
+        }
+
+        ElementRemover.removeContentFromMainContent();
+        ScheduledTasks.insertScheduledTasksContainer(scheduledType);
+        ScheduledTasks.insertTasksToContainer(tasks);
     }
 }

@@ -186,8 +186,15 @@ export class TaskUI extends Event {
 export class ScheduledTasksEvent extends Event {
 
     static handleScheduledClick(){
-        ElementRemover.removeContentFromMainContent();
-        ScheduledTasks.insertScheduledTasksContainer('scheduled');
-        ScheduledTasks.insertTasksToContainer(collection.getAllScheduledTasks());
+        ScheduledTasks.displayScheduledTasks('scheduled');
+    }
+
+    static handleScheduledTodayClick(){
+        ScheduledTasks.displayScheduledTasks('scheduled-today');
+
+        // remove order by date <option> elements
+        document.querySelector('.order-date-newest').remove();
+        document.querySelector('.order-date-oldest').remove();
+        
     }
 }

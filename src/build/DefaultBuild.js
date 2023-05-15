@@ -19,7 +19,7 @@ class DefaultBuild {
                 new Element({
                     'tagname':'div',
                     'class': 'header-title',
-                    'text-content':'To-Do-List',
+                    'text-content':'Project Organizer',
                 }).build(),
                 new Element({
                     'tagname':'div',
@@ -70,6 +70,12 @@ class DefaultBuild {
                 'tagname':'button',
                 'class':'scheduled-today',
                 'text-content':'Scheduled-today',
+                'event-listeners':{'click':ScheduledTasksEvent.handleScheduledTodayClick}
+            }).build(),
+            new Element({
+                'tagname':'button',
+                'class':'tasks',
+                'text-content':'All tasks',
             }).build(),
             new Element({
                 'tagname':'button',
@@ -77,11 +83,6 @@ class DefaultBuild {
                 'text-content':'All projects',
                 'event-listeners':{'click':MenuUI.handleProjectsDropDown}
             }).build(),
-            new Element({
-                'tagname':'button',
-                'class':'tasks',
-                'text-content':'All tasks',
-            }).build()
         ]
     }
 
