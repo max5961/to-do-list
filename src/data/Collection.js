@@ -71,13 +71,17 @@ export class Collection {
         return this.projects;
     }
 
+    getAllScheduledTasks(){
+        return this.getAllTasks().filter(task => task.scheduled != '');
+    }
+
     //below are rough drafts
-    getScheduledTodayTasks(){
-        const allTasks = this.getScheduledTasks();
+    getAllScheduledTodayTasks(){
+        const allTasks = this.getAllScheduledTasks();
 
         const currDate = new Date();
         
-        return allTasks.filter(task => task.scheduled === currDate);
+        return allTasks.filter(task => task.scheduled == currDate);
     }
 
     sortScheduledTasks(tasks, typeOfSort = undefined){

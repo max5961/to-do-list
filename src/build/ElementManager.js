@@ -6,7 +6,8 @@ import { Event } from './event-listeners.js';
 import { 
         ProjectUI,
         MenuUI,
-        TaskUI } from './event-listeners.js';
+        TaskUI,
+        ScheduledTasksEvent } from './event-listeners.js';
 
 export class ElementBuilder {
 
@@ -472,6 +473,76 @@ export class ElementBuilder {
             ]
         }).build();
     }
+
+    static buildAllTasksDisplay(scheduledType){
+        let h1
+
+        if (scheduledType === 'scheduled') {
+            h1 = 'Scheduled Tasks';
+
+        } else if (scheduledType === 'scheduled-today') {
+            h1 = 'Tasks Scheduled Today'
+        }
+
+        return new Element({
+            'tagname':'div',
+            'class':'display-scheduled-tasks',
+            'children':[
+                new Element({
+                    'tagname':'div',
+                    'class':'tasks-header-container',
+                    'children':[
+                        new Element({
+                            'tagname':'h1',
+                            'class':'all-tasks-title',
+                            'text-content':`${h1}`,
+                        }).build(),
+                        new Element({
+                            'tagname':'div',
+                            'class':'order-by-container',
+                            'children':[
+                                new Element({
+                                    'tagname':'h3',
+                                    'text-content':'Order by',
+                                }).build(),
+                                new Element({
+                                    'tagname':'select',
+                                    'class':'order-by-container',
+                                    'children':[
+                                        new Element({
+                                            'tagname':'option',
+                                            'class':'order-date-newest',
+                                            'text-content':'date newest',
+                                            'selected':'true',
+                                        }).build(),
+                                        new Element({
+                                            'tagname':'option',
+                                            'class':'order-date-oldest',
+                                            'text-content':'date oldest',
+                                        }).build(),
+                                        new Element({
+                                            'tagname':'option',
+                                            'class':'order-priority-least',
+                                            'text-content':'lowest priority',
+                                        }).build(),
+                                        new Element({
+                                            'tagname':'option',
+                                            'class':'order-priority-highest',
+                                            'text-content':'highest-priority',
+                                        }).build(),
+                                    ]
+                                }).build(),
+                            ]
+                        }).build()
+                    ]
+                }).build(),
+                new Element({
+                    'tagname':'div',
+                    'class':'displayed-tasks-container',
+                }).build(),
+            ]
+        }).build();
+    }
 }
 
 export class ElementRemover {
@@ -748,5 +819,27 @@ export class EditUI {
         projectContainer.insertAdjacentElement('afterbegin',titleInput);
         projectContainer.insertAdjacentElement('afterbegin',controlButtons);
         
+    }
+}
+
+export class ScheduledTasks {
+    
+    static insertScheduledTasksContainer(scheduledType){
+        document.querySelector('.main-content').appendChild(
+            ElementBuilder.buildAllTasksDisplay(scheduledType)
+        );
+    }
+
+    static insertTasksToContainer(allTasks){
+
+        const container = document.querySelector('.displayed-tasks-container');
+
+        for (const task of allTasks){
+
+            const priorityColor = ElementManager.getPriorityColor(task);
+
+            container.appendChild(ElementBuilder.buildProjectTask(task, priorityColor));
+
+        }
     }
 }

@@ -56,7 +56,8 @@
     }
 
 /* .project-display ------------------------------------------------------ .project-display */
-.project-display {
+.project-display,
+.display-scheduled-tasks {
     width: 100%;
     padding: 5%;
     display: flex;
@@ -245,4 +246,30 @@
     align-self: end;
     background-color: var(--green);
 }
+
+.display-scheduled-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+    .display-scheduled-tasks .tasks-header-container {
+        
+    }
+        .tasks-header-container h1 {
+            margin: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light2);
+            margin-bottom: 10px;
+        }
+        .tasks-header-container h3 {
+            margin: 0;
+            padding: 0;
+            margin-bottom: 2px;
+        }
+
+    .display-scheduled-tasks .displayed-tasks-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 

@@ -4,6 +4,7 @@ import hamburger from '../images/hamburger.png';
 import { 
     ProjectUI,
     MenuUI,
+    ScheduledTasksEvent
 } from './event-listeners.js';
 
 
@@ -63,6 +64,7 @@ class DefaultBuild {
             'tagname':'button',
             'class':'scheduled',
             'text-content':'Scheduled',
+            'event-listeners':{'click':ScheduledTasksEvent.handleScheduledClick},
             }).build(),
             new Element({
                 'tagname':'button',

@@ -4,7 +4,8 @@ import {
     ElementBuilder,
     ElementManager,
     ElementRemover,
-    EditUI, } from './ElementManager.js';
+    EditUI,
+    ScheduledTasks, } from './ElementManager.js';
 
 export class Event {
 
@@ -107,6 +108,10 @@ export class MenuUI extends Event {
         ElementManager.insertProjectToMainContent(collection.getProject(Settings.currentProject));
         ElementManager.insertTasksToProjectDisplay();
     }
+
+    static scheduledProjectsClick(){
+
+    }
 }
 
 export class TaskUI extends Event {
@@ -175,5 +180,14 @@ export class TaskUI extends Event {
     static handleEditProjectClick(){
         const project = collection.getProject(Settings.currentProject);
         EditUI.changeProjectDisplayToEdit(project);
+    }
+}
+
+export class ScheduledTasksEvent extends Event {
+
+    static handleScheduledClick(){
+        ElementRemover.removeContentFromMainContent();
+        ScheduledTasks.insertScheduledTasksContainer('scheduled');
+        ScheduledTasks.insertTasksToContainer(collection.getAllScheduledTasks());
     }
 }

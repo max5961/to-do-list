@@ -21,7 +21,6 @@ export const Settings = {
     // callback to be used with the 'mouseover' event
     updateCurrentTask(e){
         Settings.currentTask = Settings.checkAllNodesForID(e.target,'content-taskid');
-        console.log(Settings.currentTask);
     },
 
     // callback to be used with the 'mouseover' event
