@@ -221,6 +221,15 @@ export class DeleteEvent extends Event {
     static deleteTask(){
         Delete.deleteTask();
         ElementRemover.removeProjectTasks();
-        ElementManager.insertTasksToProjectDisplay();
+
+        if (Settings.currentScheduled === undefined) {
+            ElementManager.insertTasksToProjectDisplay();
+        } else if (Settings.currentScheduled === 'scheduled') {
+            TasksDisplay.displayTasksDisplay(Settings.currentScheduled,collection.getAllScheduledTasks());
+        } else if (Settings.currentScheduled === 'scheduled-today') {
+            TasksDisplay.displayTasksDisplay(Settings.currentScheduled, collection.getAllScheduledTodayTasks());
+        } else if (Settings.currentScheduled === 'all') {
+            TasksDisplay.displayTasksDisplay(Settings.currentScheduled, collection.getAllTasks());
+        }
     }
 }
