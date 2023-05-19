@@ -76,6 +76,7 @@ class DefaultBuild {
                 'tagname':'button',
                 'class':'tasks',
                 'text-content':'All tasks',
+                'event-listeners':{'click':ScheduledTasksEvent.handleAllTasksClick}
             }).build(),
             new Element({
                 'tagname':'button',

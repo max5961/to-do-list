@@ -18,6 +18,8 @@ export const Settings = {
 
     editingTask : false,
 
+    currentScheduled : undefined,
+
     // callback to be used with the 'mouseover' event
     updateCurrentTask(e){
         Settings.currentTask = Settings.checkAllNodesForID(e.target,'content-taskid');

@@ -32,6 +32,15 @@ export class Collection {
         }
     }
 
+    findTask(id){
+        const tasks = this.getAllTasks();
+        for (const task of tasks) {
+            if (task._id === id) {
+                return task;
+            }
+        }
+    }
+
     checkProjectForUniqueName(name){
         const filteredProjects = this.projects.filter(project => project.title == name);
         if (filteredProjects.length > 0) {
@@ -98,8 +107,8 @@ export class Collection {
     }
 
     // sort projects by name in ascending order
-    sortAscending(){
-        this.projects.sort((a,b) => {
+    static sortAscending(array){
+        return array.sort((a,b) => {
             const A = a.title.toUpperCase();
             const B = b.title.toUpperCase();
 
@@ -116,8 +125,8 @@ export class Collection {
     }
 
     // sort projects by name in descending order
-    sortDescending(){
-        this.projects.sort((a,b) => {
+    static sortDescending(array){
+        return array.sort((a,b) => {
             const A = a.title.toUpperCase();
             const B = b.title.toUpperCase();
 

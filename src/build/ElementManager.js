@@ -3,6 +3,7 @@ import { collection } from '../index.js';
 import { Element } from './Element.js';
 import { Settings } from '../data/Settings.js';
 import { Event } from './event-listeners.js';
+import { Collection } from '../data/Collection.js';
 import { 
         ProjectUI,
         MenuUI,
@@ -474,14 +475,16 @@ export class ElementBuilder {
         }).build();
     }
 
-    static buildAllTasksDisplay(scheduledType){
+    static buildAllTasksDisplay(allTasksType){
         let h1
 
-        if (scheduledType === 'scheduled') {
+        if (allTasksType === 'scheduled') {
             h1 = 'Scheduled Tasks';
 
-        } else if (scheduledType === 'scheduled-today') {
-            h1 = 'Tasks Scheduled Today'
+        } else if (allTasksType === 'scheduled-today') {
+            h1 = 'Tasks Scheduled Today';
+        } else if (allTasksType === 'all') {
+            h1 = 'All Tasks';
         }
 
         return new Element({
@@ -497,58 +500,11 @@ export class ElementBuilder {
                             'class':'all-tasks-title',
                             'text-content':`${h1}`,
                         }).build(),
-                        new Element({
-                            'tagname':'div',
-                            'class':'order-by-container',
-                            'children':[
-                                new Element({
-                                    'tagname':'h3',
-                                    'text-content':'Order by',
-                                }).build(),
-                                new Element({
-                                    'tagname':'select',
-                                    'class':'order-by-container',
-                                    'children':[
-                                        new Element({
-                                            'tagname':'option',
-                                            'class':'order-name-asc',
-                                            'text-content':'name asc',
-                                            'selected':'true',
-                                        }).build(),
-                                        new Element({
-                                            'tagname':'option',
-                                            'class':'order-name-desc',
-                                            'text-content':'name desc',
-                                        }).build(),
-                                        new Element({
-                                            'tagname':'option',
-                                            'class':'order-date-newest',
-                                            'text-content':'date newest',
-                                        }).build(),
-                                        new Element({
-                                            'tagname':'option',
-                                            'class':'order-date-oldest',
-                                            'text-content':'date oldest',
-                                        }).build(),
-                                        new Element({
-                                            'tagname':'option',
-                                            'class':'order-priority-least',
-                                            'text-content':'lowest priority',
-                                        }).build(),
-                                        new Element({
-                                            'tagname':'option',
-                                            'class':'order-priority-highest',
-                                            'text-content':'highest-priority',
-                                        }).build(),
-                                    ]
-                                }).build(),
-                            ]
-                        }).build()
                     ]
                 }).build(),
                 new Element({
                     'tagname':'div',
-                    'class':'displayed-tasks-container',
+                    'class':'all-tasks-container',
                 }).build(),
             ]
         }).build();
@@ -693,13 +649,12 @@ export class ElementManager {
 export class EditUI {
     
     // inserts all tasks but the current task being edited is inserted with a form instead
-    static insertAllTasks(){
+    static insertAllTasks(tasks){
 
-        const currentProject = collection.getProject(Settings.currentProject);
-        const currentTask = currentProject.getTask(Settings.currentTask);
+        const currentTask = collection.findTask(Settings.currentTask);
         const allTasksContainer = document.querySelector('.all-tasks-container');
         
-        for (const task of currentProject.tasks) {
+        for (const task of tasks) {
 
             const priorityColor = ElementManager.getPriorityColor(task);
 
@@ -842,7 +797,7 @@ export class ScheduledTasks {
 
     static insertTasksToContainer(allTasks){
 
-        const container = document.querySelector('.displayed-tasks-container');
+        const container = document.querySelector('.all-tasks-container');
 
         for (const task of allTasks){
 
@@ -854,17 +809,21 @@ export class ScheduledTasks {
     }
 
     // scheduledType parameter should be either 'scheduled' or 'scheduled-today'
-    static displayScheduledTasks(scheduledType){
-        let tasks;
-
-        if (scheduledType === 'scheduled') {
-            tasks = collection.getAllScheduledTasks();
-        } else if (scheduledType === 'scheduled-today') {
-            tasks = collection.getAllScheduledTodayTasks();
-        }
-
+    static displayScheduledTasks(scheduledType, tasks){
         ElementRemover.removeContentFromMainContent();
         ScheduledTasks.insertScheduledTasksContainer(scheduledType);
         ScheduledTasks.insertTasksToContainer(tasks);
+        Settings.currentScheduled = scheduledType;
+    }
+
+    static getOrderedTasksArray(selectedValue){
+
+        if (selectedValue === 'order-name-asc') {
+            return Collection.sortAscending(collection.getAllTasks());
+        } 
+
+        else if (selectedValue === 'order-name-desc') {
+            return Collection.sortDescending(collection.getAllTasks());
+        }
     }
 }

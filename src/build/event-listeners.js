@@ -107,6 +107,7 @@ export class MenuUI extends Event {
     static individualProjectClick(){
         ElementManager.insertProjectToMainContent(collection.getProject(Settings.currentProject));
         ElementManager.insertTasksToProjectDisplay();
+        Settings.currentScheduled = undefined;
     }
 
     static scheduledProjectsClick(){
@@ -148,7 +149,13 @@ export class TaskUI extends Event {
     static createEditTaskForm(){
         Settings.currentEditTask = Settings.currentTask;
         ElementRemover.removeProjectTasks();
-        EditUI.insertAllTasks();
+        if (Settings.currentScheduled === undefined) {
+            EditUI.insertAllTasks(collection.getProject(Settings.currentProject).tasks);
+        } else if (Settings.currentScheduled === 'scheduled') {
+            EditUI.insertAllTasks(collection.getAllScheduledTasks());
+        } else if (Settings.currentScheduled === 'scheduled-today') {
+            EditUI.insertAllTasks(collection.getAllScheduledTodayTasks());
+        }
     }
 
     static minimizeEditTaskForm(){
@@ -173,7 +180,15 @@ export class TaskUI extends Event {
         if (document.querySelector('.task-name-edit').value != '') {
             collection.replaceTaskInProject(projectID, editedTask)
             ElementRemover.removeProjectTasks();
-            ElementManager.insertTasksToProjectDisplay();
+
+            if (Settings.currentScheduled === 'scheduled') {
+                ScheduledTasks.displayScheduledTasks('scheduled',collection.getAllScheduledTasks());
+            } else if (Settings.currentScheduled === 'scheduled-today') {
+                ScheduledTasks.displayScheduledTasks('scheduled-today',collection.getAllScheduledTodayTasks())
+            } else {
+                ElementManager.insertTasksToProjectDisplay();
+            }
+            
         }
     }
 
@@ -186,15 +201,14 @@ export class TaskUI extends Event {
 export class ScheduledTasksEvent extends Event {
 
     static handleScheduledClick(){
-        ScheduledTasks.displayScheduledTasks('scheduled');
+        ScheduledTasks.displayScheduledTasks('scheduled',collection.getAllScheduledTasks());
     }
 
     static handleScheduledTodayClick(){
-        ScheduledTasks.displayScheduledTasks('scheduled-today');
+        ScheduledTasks.displayScheduledTasks('scheduled-today',collection.getAllScheduledTodayTasks());
+    }
 
-        // remove order by date <option> elements
-        document.querySelector('.order-date-newest').remove();
-        document.querySelector('.order-date-oldest').remove();
-        
+    static handleAllTasksClick(){
+        ScheduledTasks.displayScheduledTasks('all',collection.getAllTasks());
     }
 }
