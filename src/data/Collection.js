@@ -81,20 +81,20 @@ export class Collection {
         return this.projects;
     }
 
-    getAllScheduledTasks(){
+    getAllTasksDisplay(){
         return this.getAllTasks().filter(task => task.scheduled != '');
     }
 
     //below are rough drafts
     getAllScheduledTodayTasks(){
-        const allTasks = this.getAllScheduledTasks();
+        const allTasks = this.getAllTasksDisplay();
 
         const currDate = format(new Date(), 'yyyy-MM-dd');
         
         return allTasks.filter(task => task.scheduled == currDate);
     }
 
-    sortScheduledTasks(tasks, typeOfSort = undefined){
+    sortTasksDisplay(tasks, typeOfSort = undefined){
         if(typeOfSort === undefined){
             return tasks.scheduled.sort();
         }

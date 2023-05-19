@@ -8,7 +8,7 @@ import {
         ProjectUI,
         MenuUI,
         TaskUI,
-        ScheduledTasksEvent } from './event-listeners.js';
+        TasksDisplayEvent } from './event-listeners.js';
 
 export class ElementBuilder {
 
@@ -787,9 +787,9 @@ export class EditUI {
     }
 }
 
-export class ScheduledTasks {
+export class TasksDisplay {
     
-    static insertScheduledTasksContainer(scheduledType){
+    static insertTasksDisplayContainer(scheduledType){
         document.querySelector('.main-content').appendChild(
             ElementBuilder.buildAllTasksDisplay(scheduledType)
         );
@@ -809,10 +809,10 @@ export class ScheduledTasks {
     }
 
     // scheduledType parameter should be either 'scheduled' or 'scheduled-today'
-    static displayScheduledTasks(scheduledType, tasks){
+    static displayTasksDisplay(scheduledType, tasks){
         ElementRemover.removeContentFromMainContent();
-        ScheduledTasks.insertScheduledTasksContainer(scheduledType);
-        ScheduledTasks.insertTasksToContainer(tasks);
+        TasksDisplay.insertTasksDisplayContainer(scheduledType);
+        TasksDisplay.insertTasksToContainer(tasks);
         Settings.currentScheduled = scheduledType;
     }
 

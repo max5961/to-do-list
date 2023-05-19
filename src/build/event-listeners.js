@@ -5,7 +5,7 @@ import {
     ElementManager,
     ElementRemover,
     EditUI,
-    ScheduledTasks, } from './ElementManager.js';
+    TasksDisplay, } from './ElementManager.js';
 
 export class Event {
 
@@ -152,7 +152,7 @@ export class TaskUI extends Event {
         if (Settings.currentScheduled === undefined) {
             EditUI.insertAllTasks(collection.getProject(Settings.currentProject).tasks);
         } else if (Settings.currentScheduled === 'scheduled') {
-            EditUI.insertAllTasks(collection.getAllScheduledTasks());
+            EditUI.insertAllTasks(collection.getAllTasksDisplay());
         } else if (Settings.currentScheduled === 'scheduled-today') {
             EditUI.insertAllTasks(collection.getAllScheduledTodayTasks());
         }
@@ -182,9 +182,9 @@ export class TaskUI extends Event {
             ElementRemover.removeProjectTasks();
 
             if (Settings.currentScheduled === 'scheduled') {
-                ScheduledTasks.displayScheduledTasks('scheduled',collection.getAllScheduledTasks());
+                TasksDisplay.displayTasksDisplay('scheduled',collection.getAllTasksDisplay());
             } else if (Settings.currentScheduled === 'scheduled-today') {
-                ScheduledTasks.displayScheduledTasks('scheduled-today',collection.getAllScheduledTodayTasks())
+                TasksDisplay.displayTasksDisplay('scheduled-today',collection.getAllScheduledTodayTasks())
             } else {
                 ElementManager.insertTasksToProjectDisplay();
             }
@@ -198,17 +198,17 @@ export class TaskUI extends Event {
     }
 }
 
-export class ScheduledTasksEvent extends Event {
+export class TasksDisplayEvent extends Event {
 
     static handleScheduledClick(){
-        ScheduledTasks.displayScheduledTasks('scheduled',collection.getAllScheduledTasks());
+        TasksDisplay.displayTasksDisplay('scheduled',collection.getAllTasksDisplay());
     }
 
     static handleScheduledTodayClick(){
-        ScheduledTasks.displayScheduledTasks('scheduled-today',collection.getAllScheduledTodayTasks());
+        TasksDisplay.displayTasksDisplay('scheduled-today',collection.getAllScheduledTodayTasks());
     }
 
     static handleAllTasksClick(){
-        ScheduledTasks.displayScheduledTasks('all',collection.getAllTasks());
+        TasksDisplay.displayTasksDisplay('all',collection.getAllTasks());
     }
 }
