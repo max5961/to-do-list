@@ -808,7 +808,7 @@ export class TasksDisplay {
         }
     }
 
-    // scheduledType parameter should be either 'scheduled' or 'scheduled-today'
+    // scheduledType parameter should be either 'scheduled' or 'scheduled-today' or 'all'
     static displayTasksDisplay(scheduledType, tasks){
         ElementRemover.removeContentFromMainContent();
         TasksDisplay.insertTasksDisplayContainer(scheduledType);

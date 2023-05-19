@@ -155,6 +155,8 @@ export class TaskUI extends Event {
             EditUI.insertAllTasks(collection.getAllTasksDisplay());
         } else if (Settings.currentScheduled === 'scheduled-today') {
             EditUI.insertAllTasks(collection.getAllScheduledTodayTasks());
+        } else if (Settings.currentScheduled === 'all') {
+            EditUI.insertAllTasks(collection.getAllTasks());
         }
     }
 
