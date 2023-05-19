@@ -8,7 +8,8 @@ import {
         ProjectUI,
         MenuUI,
         TaskUI,
-        TasksDisplayEvent } from './event-listeners.js';
+        TasksDisplayEvent,
+        DeleteEvent } from './event-listeners.js';
 
 export class ElementBuilder {
 
@@ -310,6 +311,12 @@ export class ElementBuilder {
                     'class':'edit-task',
                     'text-content':'Discard',
                     'event-listeners':{'click':TaskUI.minimizeEditTaskForm},
+                }).build(),
+                new Element({
+                    'tagname':'button',
+                    'class':'delete-task',
+                    'text-content':'Delete',
+                    'event-listeners':{'click':DeleteEvent.deleteTask},
                 }).build(),
                 new Element({
                     'tagname':'div',
@@ -825,5 +832,18 @@ export class TasksDisplay {
         else if (selectedValue === 'order-name-desc') {
             return Collection.sortDescending(collection.getAllTasks());
         }
+    }
+}
+
+export class Delete {
+    static deleteProject(){
+        collection.removeProject(Settings.currentProject);
+        ElementRemover.removeContentFromMainContent();
+    }
+
+    static deleteTask(){
+        console.log(collection.getAllTasks());
+        collection.removeTask(Settings.currentEditTask);
+        console.log(collection.getAllTasks());
     }
 }

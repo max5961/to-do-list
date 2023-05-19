@@ -186,7 +186,7 @@
     grid-template-areas:
         "priority-color input curr-date discard"
         "priority-color due-date . priority"
-        "priority-color notes notes submit"
+        "priority-color notes delete submit"
         "priority-color . . ."
 }
 
@@ -245,6 +245,14 @@
     justify-self: center;
     align-self: end;
     background-color: var(--green);
+}
+.edit-task-container .delete-task {
+    grid-area: delete;
+    height: 25px;
+    width: 55px;
+    justify-self: center;
+    align-self: end;
+    background-color: var(--red);
 }
 
 .display-scheduled-tasks {

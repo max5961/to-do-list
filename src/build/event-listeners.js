@@ -5,7 +5,8 @@ import {
     ElementManager,
     ElementRemover,
     EditUI,
-    TasksDisplay, } from './ElementManager.js';
+    TasksDisplay,
+    Delete, } from './ElementManager.js';
 
 export class Event {
 
@@ -212,5 +213,14 @@ export class TasksDisplayEvent extends Event {
 
     static handleAllTasksClick(){
         TasksDisplay.displayTasksDisplay('all',collection.getAllTasks());
+    }
+}
+
+export class DeleteEvent extends Event {
+
+    static deleteTask(){
+        Delete.deleteTask();
+        ElementRemover.removeProjectTasks();
+        ElementManager.insertTasksToProjectDisplay();
     }
 }

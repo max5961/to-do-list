@@ -41,6 +41,19 @@ export class Collection {
         }
     }
 
+    removeTask(id){
+        
+        const task = this.findTask(id);
+        const project = this.getProject(id.slice(0,5));
+
+        for (let i = 0; i < project.tasks.length; i++) {
+            if(project.tasks[i] === task) {
+                project.tasks.splice(i,1);
+                return;
+            }
+        }
+    }
+
     checkProjectForUniqueName(name){
         const filteredProjects = this.projects.filter(project => project.title == name);
         if (filteredProjects.length > 0) {
