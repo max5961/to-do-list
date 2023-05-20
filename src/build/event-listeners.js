@@ -13,6 +13,10 @@ export class Event {
     static preventDefault(e){
         e.preventDefault();
     }
+
+    static stopPropagation(e){
+        e.stopPropagation();
+    }
 }
 
 export class ProjectUI extends Event {
@@ -108,7 +112,7 @@ export class MenuUI extends Event {
     static individualProjectClick(){
         ElementManager.insertProjectToMainContent(collection.getProject(Settings.currentProject));
         ElementManager.insertTasksToProjectDisplay();
-        Settings.currentScheduled = undefined;
+        Settings.currentView = undefined;
     }
 
     static scheduledProjectsClick(){
@@ -150,13 +154,13 @@ export class TaskUI extends Event {
     static createEditTaskForm(){
         Settings.currentEditTask = Settings.currentTask;
         ElementRemover.removeProjectTasks();
-        if (Settings.currentScheduled === undefined) {
+        if (Settings.currentView === undefined) {
             EditUI.insertAllTasks(collection.getProject(Settings.currentProject).tasks);
-        } else if (Settings.currentScheduled === 'scheduled') {
-            EditUI.insertAllTasks(collection.getAllTasksDisplay());
-        } else if (Settings.currentScheduled === 'scheduled-today') {
+        } else if (Settings.currentView === 'scheduled') {
+            EditUI.insertAllTasks(collection.getAllScheduledTasks());
+        } else if (Settings.currentView === 'scheduled-today') {
             EditUI.insertAllTasks(collection.getAllScheduledTodayTasks());
-        } else if (Settings.currentScheduled === 'all') {
+        } else if (Settings.currentView === 'all') {
             EditUI.insertAllTasks(collection.getAllTasks());
         }
     }
@@ -184,9 +188,9 @@ export class TaskUI extends Event {
             collection.replaceTaskInProject(projectID, editedTask)
             ElementRemover.removeProjectTasks();
 
-            if (Settings.currentScheduled === 'scheduled') {
-                TasksDisplay.displayTasksDisplay('scheduled',collection.getAllTasksDisplay());
-            } else if (Settings.currentScheduled === 'scheduled-today') {
+            if (Settings.currentView === 'scheduled') {
+                TasksDisplay.displayTasksDisplay('scheduled',collection.getAllScheduledTasks());
+            } else if (Settings.currentView === 'scheduled-today') {
                 TasksDisplay.displayTasksDisplay('scheduled-today',collection.getAllScheduledTodayTasks())
             } else {
                 ElementManager.insertTasksToProjectDisplay();
@@ -204,7 +208,7 @@ export class TaskUI extends Event {
 export class TasksDisplayEvent extends Event {
 
     static handleScheduledClick(){
-        TasksDisplay.displayTasksDisplay('scheduled',collection.getAllTasksDisplay());
+        TasksDisplay.displayTasksDisplay('scheduled',collection.getAllScheduledTasks());
     }
 
     static handleScheduledTodayClick(){
@@ -222,14 +226,14 @@ export class DeleteEvent extends Event {
         Delete.deleteTask();
         ElementRemover.removeProjectTasks();
 
-        if (Settings.currentScheduled === undefined) {
+        if (Settings.currentView === undefined) {
             ElementManager.insertTasksToProjectDisplay();
-        } else if (Settings.currentScheduled === 'scheduled') {
-            TasksDisplay.displayTasksDisplay(Settings.currentScheduled,collection.getAllScheduledTasks());
-        } else if (Settings.currentScheduled === 'scheduled-today') {
-            TasksDisplay.displayTasksDisplay(Settings.currentScheduled, collection.getAllScheduledTodayTasks());
-        } else if (Settings.currentScheduled === 'all') {
-            TasksDisplay.displayTasksDisplay(Settings.currentScheduled, collection.getAllTasks());
+        } else if (Settings.currentView === 'scheduled') {
+            TasksDisplay.displayTasksDisplay(Settings.currentView,collection.getAllScheduledTasks());
+        } else if (Settings.currentView === 'scheduled-today') {
+            TasksDisplay.displayTasksDisplay(Settings.currentView, collection.getAllScheduledTodayTasks());
+        } else if (Settings.currentView === 'all') {
+            TasksDisplay.displayTasksDisplay(Settings.currentView, collection.getAllTasks());
         }
     }
 }

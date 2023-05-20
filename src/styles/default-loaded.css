@@ -25,15 +25,20 @@
     align-items: center;
     padding-left: 5%;
     padding-right: 5%;
+    position: relative;
 }
     .header .header-button-container {
         width: 50%;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: absolute;
+        left: 330px;
     }
     .header .header-title {
         font-size: 2rem;
+        position: absolute;
+        left: 10px;
     }
     .header button {
         width: 100px;

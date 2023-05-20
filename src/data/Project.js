@@ -1,8 +1,9 @@
 import { Task } from './Task.js';
+import { Storage } from './Storage.js';
 import { collection } from '../index.js';
-import { add, format } from 'date-fns'
+import { add, format } from 'date-fns';
 
-export class Project{
+export class Project {
     constructor(title, desc){
         this.title = title;
         this.desc = desc;
@@ -47,6 +48,7 @@ export class Project{
     ){  
         this.tasks.push(new Task(title, scheduled, priority));
         this.setTaskIDs();
+        Storage.pushToLocalStorage(collection);
     }
 
     checkForUniqueTaskName(name){

@@ -1,3 +1,6 @@
+import { Storage } from './Storage.js';
+import { collection } from '../index.js';
+
 export class Task {
     constructor(title, scheduled, priority){
         this.title = title;

@@ -764,7 +764,7 @@ export class EditUI {
     }
 
     static getEditedTask(){
-        const editedTask = collection.getProject(Settings.currentProject).getTask(Settings.currentEditTask);
+        const editedTask = collection.findTask(Settings.currentEditTask);
 
         editedTask.title = document.querySelector('.task-name-edit').value;
         editedTask.scheduled = document.querySelector('.change-date-input').value;
@@ -820,7 +820,7 @@ export class TasksDisplay {
         ElementRemover.removeContentFromMainContent();
         TasksDisplay.insertTasksDisplayContainer(scheduledType);
         TasksDisplay.insertTasksToContainer(tasks);
-        Settings.currentScheduled = scheduledType;
+        Settings.currentView = scheduledType;
     }
 
     static getOrderedTasksArray(selectedValue){
@@ -836,14 +836,13 @@ export class TasksDisplay {
 }
 
 export class Delete {
+
     static deleteProject(){
         collection.removeProject(Settings.currentProject);
         ElementRemover.removeContentFromMainContent();
     }
 
     static deleteTask(){
-        console.log(collection.getAllTasks());
         collection.removeTask(Settings.currentEditTask);
-        console.log(collection.getAllTasks());
     }
 }

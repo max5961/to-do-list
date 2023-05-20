@@ -1,4 +1,6 @@
 import { Project } from './Project.js';
+import { Storage } from './Storage.js';
+import { collection } from '../index.js';
 import { add, format } from 'date-fns';
 
 export class Collection {
@@ -9,6 +11,7 @@ export class Collection {
     addProject(title,desc){
         this.projects.push(new Project(title,desc))
         this.setProjectIDs();
+        Storage.pushToLocalStorage(collection);
     }
 
     setProjectIDs(){
@@ -52,6 +55,7 @@ export class Collection {
                 return;
             }
         }
+
     }
 
     checkProjectForUniqueName(name){
@@ -68,10 +72,12 @@ export class Collection {
         this.projects.splice(index, 1);
     }
 
+    // unused
     addTaskToProject(id){
         const index = this.findProject(id);
 
         this.projects[index].addTask();
+        
     }
 
     replaceTaskInProject(projectID, editedTask){
@@ -94,17 +100,16 @@ export class Collection {
         return this.projects;
     }
 
-    getAllTasksDisplay(){
+    getAllScheduledTasks(){
         return this.getAllTasks().filter(task => task.scheduled != '');
     }
 
-    //below are rough drafts
     getAllScheduledTodayTasks(){
-        const allTasks = this.getAllTasksDisplay();
+        const allScheduledTasks = this.getAllScheduledTasks();
 
         const currDate = format(new Date(), 'yyyy-MM-dd');
         
-        return allTasks.filter(task => task.scheduled == currDate);
+        return allScheduledTasks.filter(task => task.scheduled == currDate);
     }
 
     sortTasksDisplay(tasks, typeOfSort = undefined){
