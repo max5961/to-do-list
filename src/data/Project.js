@@ -48,7 +48,6 @@ export class Project {
     ){  
         this.tasks.push(new Task(title, scheduled, priority));
         this.setTaskIDs();
-        Storage.pushToLocalStorage(collection);
     }
 
     checkForUniqueTaskName(name){

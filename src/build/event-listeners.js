@@ -1,5 +1,6 @@
 import { collection } from '../index.js';
 import { Settings } from '../data/Settings.js';
+import { Storage } from '../data/Storage.js';
 import { 
     ElementBuilder,
     ElementManager,
@@ -64,6 +65,8 @@ export class ProjectUI extends Event {
         } else {
             window.alert('There is already a project with that name!');
         }
+
+        Storage.pushToLocalStorage(collection);
     }
 
     static handleSubmitEdit(){
@@ -77,6 +80,8 @@ export class ProjectUI extends Event {
 
         Settings.showProjectsDropDown = true;
         MenuUI.handleProjectsDropDown();
+
+        Storage.pushToLocalStorage(collection);
 
     }
 
@@ -144,6 +149,7 @@ export class TaskUI extends Event {
             ElementManager.insertTasksToProjectDisplay();
             Settings.newTaskAllowed = true;
             Settings.editingTask = false;
+            Storage.pushToLocalStorage(collection);
         } else if (nameInput === '') {
             return
         } else {
@@ -186,6 +192,7 @@ export class TaskUI extends Event {
 
         if (document.querySelector('.task-name-edit').value != '') {
             collection.replaceTaskInProject(projectID, editedTask)
+            Storage.pushToLocalStorage(collection);
             ElementRemover.removeProjectTasks();
 
             if (Settings.currentView === 'scheduled') {
@@ -195,7 +202,6 @@ export class TaskUI extends Event {
             } else {
                 ElementManager.insertTasksToProjectDisplay();
             }
-            
         }
     }
 
@@ -224,6 +230,7 @@ export class DeleteEvent extends Event {
 
     static deleteTask(){
         Delete.deleteTask();
+        Storage.pushToLocalStorage(collection);
         ElementRemover.removeProjectTasks();
 
         if (Settings.currentView === undefined) {

@@ -11,7 +11,6 @@ export class Collection {
     addProject(title,desc){
         this.projects.push(new Project(title,desc))
         this.setProjectIDs();
-        Storage.pushToLocalStorage(collection);
     }
 
     setProjectIDs(){
