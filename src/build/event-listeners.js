@@ -243,4 +243,12 @@ export class DeleteEvent extends Event {
             TasksDisplay.displayTasksDisplay(Settings.currentView, collection.getAllTasks());
         }
     }
+
+    static deleteProject(){
+        Delete.deleteProject();
+        Storage.pushToLocalStorage(collection);
+        ElementRemover.removeContentFromMainContent();
+        Settings.showProjectsDropDown = true;
+        MenuUI.handleProjectsDropDown();
+    }
 }

@@ -152,12 +152,24 @@
     flex-direction: row;
     justify-content: space-between;
     gap: 5px;
+    width: 100%;
+    margin-bottom: 12px;
 }
+    .edit-project-buttons-container .right-project-buttons-container {
+        width: 130px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
     .edit-project-buttons-container .cancel-project-changes {
-        background-color: var(--red);
+        background-color: var(--orange);
     }
     .edit-project-buttons-container .submit-project-changes {
         background-color: var(--green);
+    }
+    .edit-project-buttons-container .delete-project-button {
+        background-color: var(--red);
+        color: var(--light1);
     }
 
 .all-tasks-container {

@@ -468,15 +468,27 @@ export class ElementBuilder {
             'children':[
                 new Element({
                     'tagname':'button',
-                    'text-content':'Discard',
-                    'class':'cancel-project-changes',
-                    'event-listeners':{'click':ProjectUI.handleCancelEdit}
+                    'class':'delete-project-button',
+                    'text-content':'Delete project',
+                    'event-listeners':{'click':DeleteEvent.deleteProject}
                 }).build(),
                 new Element({
-                    'tagname':'button',
-                    'class':'submit-project-changes',
-                    'text-content':'Submit',
-                    'event-listeners':{'click':ProjectUI.handleSubmitEdit}
+                    'tagname':'div',
+                    'class':'right-project-buttons-container',
+                    'children':[
+                        new Element({
+                            'tagname':'button',
+                            'text-content':'Discard',
+                            'class':'cancel-project-changes',
+                            'event-listeners':{'click':ProjectUI.handleCancelEdit}
+                        }).build(),
+                        new Element({
+                            'tagname':'button',
+                            'class':'submit-project-changes',
+                            'text-content':'Submit',
+                            'event-listeners':{'click':ProjectUI.handleSubmitEdit}
+                        }).build(),
+                    ]
                 }).build(),
             ]
         }).build();
@@ -839,7 +851,7 @@ export class Delete {
 
     static deleteProject(){
         collection.removeProject(Settings.currentProject);
-        ElementRemover.removeContentFromMainContent();
+        
     }
 
     static deleteTask(){
